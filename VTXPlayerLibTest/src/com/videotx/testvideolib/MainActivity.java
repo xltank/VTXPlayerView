@@ -26,17 +26,24 @@ public class MainActivity extends ActionBarActivity {
 					.add(R.id.container, new PlaceholderFragment()).commit();
 		}
 		
+		playVideo();
+		
 		Button btn = (Button) findViewById(R.id.viewVideo);
 		btn.setOnClickListener(new View.OnClickListener() 
 		{
 			@Override
 			public void onClick(View v) {
-				Intent intent = new Intent(MainActivity.this, VTXViewVideoActivity.class);
-				intent.putExtra(MessageConstant.VIDEO_ID, "137687822667612161");
-				intent.putExtra(MessageConstant.PUBLISHER_ID, "94986174405279744");
-				startActivity(intent);
+				playVideo();
 			}
 		});
+	}
+	
+	private void playVideo()
+	{
+		Intent intent = new Intent(this, VTXViewVideoActivity.class);
+		intent.putExtra(MessageConstant.VIDEO_ID, "137687822667612161");
+		intent.putExtra(MessageConstant.PUBLISHER_ID, "94986174405279744");
+		startActivity(intent);
 	}
 
 	
