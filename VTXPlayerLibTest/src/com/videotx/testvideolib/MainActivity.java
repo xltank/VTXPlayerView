@@ -1,7 +1,7 @@
 package com.videotx.testvideolib;
 
-import com.videotx.vtxplayerview.VTXViewVideoActivity;
-import com.videotx.vtxplayerview.constants.MessageConstant;
+import com.videotx.vtxplayerlib.VTXViewVideoActivity;
+import com.videotx.vtxplayerlib.constants.MessageConstant;
 
 import android.content.Intent;
 import android.os.Bundle;

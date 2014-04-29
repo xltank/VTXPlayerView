@@ -29,7 +29,7 @@
         </activity>
         
         <activity
-            android:name="com.videotx.vtxplayerview.VTXViewVideoActivity"
+            android:name="com.videotx.vtxplayerlib.VTXViewVideoActivity"
             android:label="VTX ViewVideo Activity" >
             <intent-filter>
                 <action android:name="android.intent.action.VIEW" />

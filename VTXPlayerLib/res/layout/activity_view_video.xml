@@ -9,7 +9,7 @@
     android:paddingTop="@dimen/activity_vertical_margin"
     tools:context=".VTXViewVideoActivity" >
 
-    <com.videotx.vtxplayerview.comps.CustomRelativeLayout
+    <com.videotx.vtxplayerlib.comps.CustomRelativeLayout
         android:id="@+id/playerContainer"
         android:layout_width="match_parent"
     	android:layout_height="0dp"
@@ -193,13 +193,13 @@
 		    	android:gravity="center_vertical"
 		    	>
 		        
-		        <com.videotx.vtxplayerview.comps.PlayPauseButton
+		        <com.videotx.vtxplayerlib.comps.PlayPauseButton
 	    		    android:id="@+id/play_pause_button"
 	    		    android:layout_width="wrap_content"
 		            android:layout_height="wrap_content"
 		            android:layout_alignParentLeft="true"
 	    		    >
-	    		</com.videotx.vtxplayerview.comps.PlayPauseButton>
+	    		</com.videotx.vtxplayerlib.comps.PlayPauseButton>
 		        
 		        <TextView android:id="@+id/time"
 	                android:layout_width="wrap_content"
@@ -211,13 +211,13 @@
 	                android:text="@string/play_time_default"
 	                />
 		        
-		        <com.videotx.vtxplayerview.comps.VolumeButton
+		        <com.videotx.vtxplayerlib.comps.VolumeButton
 		            android:id="@+id/volume_button"
  	                android:layout_width="wrap_content"
 	                android:layout_height="wrap_content"
 	                android:layout_toRightOf="@+id/time"
 		            >
-		        </com.videotx.vtxplayerview.comps.VolumeButton>
+		        </com.videotx.vtxplayerlib.comps.VolumeButton>
 		        
 		        <RelativeLayout 
 	                android:layout_width="wrap_content"
@@ -246,7 +246,7 @@
 		        </RelativeLayout>
 			</RelativeLayout>
     	</LinearLayout>
-   	</com.videotx.vtxplayerview.comps.CustomRelativeLayout>
+   	</com.videotx.vtxplayerlib.comps.CustomRelativeLayout>
     
     <LinearLayout android:id="@+id/gap"
         android:orientation="horizontal"

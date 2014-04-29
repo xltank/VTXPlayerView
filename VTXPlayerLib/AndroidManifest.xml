@@ -1,5 +1,5 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.videotx.vtxplayerview"
+    package="com.videotx.vtxplayerlib"
     android:versionCode="1"
     android:versionName="1.0" >
 
@@ -14,7 +14,7 @@
         android:theme="@style/AppTheme" >
         
         <activity
-            android:name="com.videotx.vtxplayerview.VTXViewVideoActivity"
+            android:name="com.videotx.vtxplayerlib.VTXViewVideoActivity"
             android:label="VTX ViewVideo Activity" >
             <intent-filter>
                 <action android:name="android.intent.action.VIEW" />

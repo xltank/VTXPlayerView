@@ -1,2 +1,2 @@
-VTXPlayerView
+vtxplayerlib
 =============
