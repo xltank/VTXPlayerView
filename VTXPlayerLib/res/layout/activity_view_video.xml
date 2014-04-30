@@ -114,14 +114,21 @@
 <!-- 	    </RelativeLayout> -->
 	    
 	    <LinearLayout
-	        android:id="@+id/float_panel"
-	        android:layout_width="40dp"
+	        android:id="@+id/playlist_panel"
+	        android:layout_width="200dp"
 	        android:layout_height="match_parent"
 	        android:visibility="invisible"
 	        android:layout_alignParentRight="true"
 	        android:orientation="horizontal"
 	        >
-	        
+
+	        <ListView
+	            android:id="@+id/playlist_view"
+	            android:layout_width="match_parent"
+	            android:layout_height="match_parent"
+	            >
+	        </ListView>
+
 	    </LinearLayout>
 	    
 	    <LinearLayout 
@@ -150,14 +157,14 @@
 <!-- 			    android:layout_height="match_parent" -->
 <!-- 			    android:background="#b8b8b8"> -->
 <!-- 			</View> -->
-	        <Button
-	            android:id="@+id/menu_button"
-	            android:layout_width="wrap_content"
-	            android:layout_height="match_parent"
-	            android:text="@string/menu"
-	            android:textSize="12sp"
-	            android:background="#666666"
-	            />
+<!-- 	        <Button -->
+<!-- 	            android:id="@+id/menu_button" -->
+<!-- 	            android:layout_width="wrap_content" -->
+<!-- 	            android:layout_height="match_parent" -->
+<!-- 	            android:text="@string/menu" -->
+<!-- 	            android:textSize="12sp" -->
+<!-- 	            android:background="#666666" -->
+<!-- 	            /> -->
 	        
         </LinearLayout>
         

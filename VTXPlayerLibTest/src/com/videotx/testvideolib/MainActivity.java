@@ -2,11 +2,13 @@ package com.videotx.testvideolib;
 
 import com.videotx.vtxplayerlib.VTXViewVideoActivity;
 import com.videotx.vtxplayerlib.constants.MessageConstant;
+import com.videotx.vtxplayerlib.utils.GlobalData;
 
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v7.app.ActionBarActivity;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -26,7 +28,7 @@ public class MainActivity extends ActionBarActivity {
 					.add(R.id.container, new PlaceholderFragment()).commit();
 		}
 		
-		playVideo();
+//		playVideo();
 		
 		Button btn = (Button) findViewById(R.id.viewVideo);
 		btn.setOnClickListener(new View.OnClickListener() 
@@ -41,11 +43,11 @@ public class MainActivity extends ActionBarActivity {
 	private void playVideo()
 	{
 		Intent intent = new Intent(this, VTXViewVideoActivity.class);
-		intent.putExtra(MessageConstant.VIDEO_ID, "137687822667612161");
+//		intent.putExtra(MessageConstant.VIDEO_ID, "137687822667612161");
+		intent.putExtra(MessageConstant.PLAYLIST_ID, "94990205768957953");
 		intent.putExtra(MessageConstant.PUBLISHER_ID, "94986174405279744");
 		startActivity(intent);
 	}
-
 	
 	
 	

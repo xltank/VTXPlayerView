@@ -6,6 +6,15 @@ import java.util.HashMap;
 import java.util.Timer;
 import java.util.TimerTask;
 
+import tv.danmaku.ijk.media.player.IMediaPlayer;
+import tv.danmaku.ijk.media.player.IMediaPlayer.OnBufferingUpdateListener;
+import tv.danmaku.ijk.media.player.IMediaPlayer.OnCompletionListener;
+import tv.danmaku.ijk.media.player.IMediaPlayer.OnErrorListener;
+import tv.danmaku.ijk.media.player.IMediaPlayer.OnInfoListener;
+import tv.danmaku.ijk.media.player.IMediaPlayer.OnPreparedListener;
+import tv.danmaku.ijk.media.player.IMediaPlayer.OnSeekCompleteListener;
+import tv.danmaku.ijk.media.player.IMediaPlayer.OnVideoSizeChangedListener;
+import tv.danmaku.ijk.media.player.IjkMediaPlayer;
 import android.app.Activity;
 import android.content.Intent;
 import android.content.pm.ActivityInfo;
@@ -13,13 +22,6 @@ import android.content.res.Configuration;
 import android.graphics.Point;
 import android.media.AudioManager;
 import android.media.MediaPlayer;
-import android.media.MediaPlayer.OnBufferingUpdateListener;
-import android.media.MediaPlayer.OnCompletionListener;
-import android.media.MediaPlayer.OnErrorListener;
-import android.media.MediaPlayer.OnInfoListener;
-import android.media.MediaPlayer.OnPreparedListener;
-import android.media.MediaPlayer.OnSeekCompleteListener;
-import android.media.MediaPlayer.OnVideoSizeChangedListener;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
@@ -35,9 +37,13 @@ import android.view.View.OnClickListener;
 import android.view.View.OnTouchListener;
 import android.view.WindowManager;
 import android.view.WindowManager.LayoutParams;
+import android.widget.AdapterView.OnItemClickListener;
+import android.widget.AdapterView;
+import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.ListView;
 import android.widget.RelativeLayout;
 import android.widget.SeekBar;
 import android.widget.SeekBar.OnSeekBarChangeListener;
@@ -45,8 +51,9 @@ import android.widget.TextView;
 
 import com.videotx.vtxplayerlib.comps.CustomRelativeLayout;
 import com.videotx.vtxplayerlib.comps.PlayPauseButton;
-import com.videotx.vtxplayerlib.comps.VolumeButton;
+import com.videotx.vtxplayerlib.comps.PlaylistArrayAdaptor;
 import com.videotx.vtxplayerlib.comps.PlayPauseButton.OnPlayButtonStateChangeListener;
+import com.videotx.vtxplayerlib.comps.VolumeButton;
 import com.videotx.vtxplayerlib.constants.APIConstant;
 import com.videotx.vtxplayerlib.constants.MessageConstant;
 import com.videotx.vtxplayerlib.control.Facade;
@@ -57,7 +64,7 @@ import com.videotx.vtxplayerlib.utils.VideoUtil;
 import com.videotx.vtxplayerlib.vo.PlaylistInfo;
 import com.videotx.vtxplayerlib.vo.ThumbnailsVTX;
 import com.videotx.vtxplayerlib.vo.VideoInfo;
-import com.videotx.vtxplayerlib.R;
+
 
 public class VTXViewVideoActivity extends Activity 
 	implements Callback, OnPreparedListener, OnBufferingUpdateListener, OnVideoSizeChangedListener,
@@ -75,10 +82,10 @@ public class VTXViewVideoActivity extends Activity
 	private PlaylistInfo curPlaylistInfo;
 	
 	private SurfaceView playerView;
-	private MediaPlayer player;
+	private IjkMediaPlayer player;
 	private AudioManager audioManager;
 	
-	private VideoInfo videoInfo;
+//	private VideoInfo videoInfo;
 	private String videoUrl;
 	
 	private Timer tikerTimer;
@@ -104,7 +111,11 @@ public class VTXViewVideoActivity extends Activity
 	private TextView videoDesc;
 	
 	private LinearLayout menubar;
-	private LinearLayout floatPanel;
+	private Button playlistButton;
+//	private Button menuButton;
+	
+	private LinearLayout playlistPanel;
+	private ListView playlistView;
 	
 	private int bufferPercent;
 	private long duration;
@@ -134,77 +145,11 @@ public class VTXViewVideoActivity extends Activity
 		{
 			getPlaylistInfo(playlistId, publisherId);
 		}
+		
+		initComps(); 
 	}
 	
-	/////////// video
-	private void getVideoInfo(String videoId, String publisherId)
-	{
-		Facade.ins().getVideoInfo(
-				onVideoInfoHandler, 
-				videoId, 
-				publisherId, 
-				APIConstant.DEFAULT_RESULT_FORMAT, 
-				APIConstant.VIDEO_TYPE_MP4);
-	}
-	final Handler onVideoInfoHandler = new Handler()
-	{
-		@Override
-		public void handleMessage(Message msg){
-			super.handleMessage(msg);
-			
-			curVideoInfoJSON = msg.getData().getString("result");
-			curVideoInfo = VideoUtil.parseVideoInfoJSON(curVideoInfoJSON);
-			if(curVideoInfo==null || curVideoInfo.renditions.size() == 0)
-			{
-				Log.e(GlobalData.DEBUG_TAG, "ERROR: video info error or no playable rendition");
-				return ;
-			}
-
-			videoInfo = VideoUtil.parseVideoInfoJSON(curVideoInfoJSON);
-			videoUrl = videoInfo.renditions.get(0).getUrl();
-			duration = videoInfo.renditions.get(0).getDuration();
-			videoWidth = videoInfo.renditions.get(0).getWidth();
-			videoHeight = videoInfo.renditions.get(0).getHeight();
-			
-			// should we remove all listeners? 
-			//or we need not to do that because they are all in the same activity?
-			initListeners(); 
-			initPlayer();
-		}
-	};
-	
-	/////////// playlist
-	private void getPlaylistInfo(String playlistId, String publisherId)
-	{
-		Facade.ins().getPlaylistInfo(
-				onPlaylistInfoHandler, 
-				playlistId, 
-				publisherId, 
-				APIConstant.DEFAULT_RESULT_FORMAT, 
-				APIConstant.VIDEO_TYPE_MP4);
-	}
-	final Handler onPlaylistInfoHandler = new Handler()
-	{
-		@Override
-		public void handleMessage(Message msg){
-			super.handleMessage(msg);
-			
-			curPlaylistInfoJSON = msg.getData().getString("result");
-			curPlaylistInfo = VideoUtil.parsePlaylistInfoJSON(curPlaylistInfoJSON);
-			if(curPlaylistInfo==null || curPlaylistInfo.videos.size() == 0)
-			{
-				Log.e(GlobalData.DEBUG_TAG, "ERROR: video info error or no playable rendition");
-				return ;
-			}
-			// TODO: codes for playing playlist. 
-			
-			initListeners(); 
-			initPlayer();
-		}
-	};
-	
-	
-	private void initListeners()
+	private void initComps()
 	{
 		audioManager = (AudioManager) getSystemService(AUDIO_SERVICE);
 		maxVolumeIndex = audioManager.getStreamMaxVolume(AudioManager.STREAM_MUSIC);
@@ -239,36 +184,76 @@ public class VTXViewVideoActivity extends Activity
 		fullScreenExitButton.setOnClickListener(onFullScreenExitButtonClick);
 		
 		videoTitle = (TextView) findViewById(R.id.video_title);
-		videoTitle.setText(videoInfo.title);
-		
 		videoDesc = (TextView) findViewById(R.id.video_desc);
-		videoDesc.setText(videoInfo.description);
 		
 		menubar = (LinearLayout) findViewById(R.id.menuBar);
-//		menubar
+//		menubar.setOnClickListener(onMenubarClick);
 		
-		floatPanel = (LinearLayout) findViewById(R.id.float_panel);
+		playlistButton = (Button) findViewById(R.id.playlist_button);
+		playlistButton.setOnClickListener(onPlaylistButtonClick);
+//		menuButton = (Button) findViewById(R.id.menu_button);
+		
+		playlistView = (ListView) findViewById(R.id.playlist_view);
+		
+		playlistPanel = (LinearLayout) findViewById(R.id.playlist_panel);
 	}
 	
-	private void initPlayer()
+	
+	// ########## video
+	private void getVideoInfo(String videoId, String publisherId)
 	{
-		setSnapshot();
+		Facade.ins().getVideoInfo(
+				onVideoInfoHandler, 
+				videoId, 
+				publisherId, 
+				APIConstant.RESULT_FORMAT_JSON, 
+				APIConstant.VIDEO_TYPE_M3U8
+//				APIConstant.VIDEO_TYPE_MP4
+				);
+	}
+	final Handler onVideoInfoHandler = new Handler()
+	{
+		@Override
+		public void handleMessage(Message msg){
+			super.handleMessage(msg);
+			
+			curVideoInfoJSON = msg.getData().getString("result");
+			curVideoInfo = VideoUtil.parseVideoInfoJSON(curVideoInfoJSON);
+			prepareVideoInfo();
+		}
+	};
+	
+	private void prepareVideoInfo()
+	{
+		if(curVideoInfo==null || curVideoInfo.renditions.size() == 0)
+		{
+			Log.e(GlobalData.DEBUG_TAG, "ERROR: video info error or no playable rendition");
+			return ;
+		}
+
+		videoUrl = curVideoInfo.renditions.get(0).getUrl();
+//		Log.w(GlobalData.DEBUG_TAG, "videoURL: "+videoUrl);
+		duration = curVideoInfo.renditions.get(0).getDuration();
+		videoWidth = curVideoInfo.renditions.get(0).getWidth();
+		videoHeight = curVideoInfo.renditions.get(0).getHeight();
 		
-		playerView = (SurfaceView) findViewById(R.id.playerView);
-		playerView.getHolder().addCallback(this);
+		videoTitle.setText(curVideoInfo.title);
+		videoDesc.setText("video URL " + videoUrl);
 		
-		player = new MediaPlayer();
-		player.setOnPreparedListener(this);
-		player.setOnBufferingUpdateListener(this);
-		player.setOnVideoSizeChangedListener(this);
-		player.setOnCompletionListener(this);
-		player.setOnSeekCompleteListener(this);
-		player.setOnErrorListener(this);
-		player.setOnInfoListener(this);
+		// should we remove all listeners? 
+		//or we need not to do that because they are all in the same activity?
+		if(player == null)
+		{
+			initPlayer();
+			autoHide(controlBar, AUTO_HIDE_DELAY_MILLIS);
+			autoHide(menubar, AUTO_HIDE_DELAY_MILLIS);
+//			autoHide(playlistPanel, AUTO_HIDE_DELAY_MILLIS);
+		}
 		
 		try {
+			player.reset();
 			player.setDataSource(videoUrl);
-			player.prepare();
+			player.prepareAsync();
 		} catch (IllegalArgumentException e) {
 			e.printStackTrace();
 		} catch (SecurityException e) {
@@ -278,21 +263,93 @@ public class VTXViewVideoActivity extends Activity
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
+		
+		setSnapshot();
+	}
+	
+	// ########## playlist
+	private void getPlaylistInfo(String playlistId, String publisherId)
+	{
+		Facade.ins().getPlaylistInfo(
+				onPlaylistInfoHandler, 
+				playlistId, 
+				publisherId, 
+				APIConstant.RESULT_FORMAT_JSON, 
+				APIConstant.VIDEO_TYPE_MP4);
+	}
+	final Handler onPlaylistInfoHandler = new Handler()
+	{
+		@Override
+		public void handleMessage(Message msg){
+			super.handleMessage(msg);
+			
+			curPlaylistInfoJSON = msg.getData().getString("result");
+			curPlaylistInfo = VideoUtil.parsePlaylistInfoJSON(curPlaylistInfoJSON);
+			if(curPlaylistInfo==null || curPlaylistInfo.videos.size() == 0)
+			{
+				Log.e(GlobalData.DEBUG_TAG, "ERROR: video info error or no playable rendition");
+				return ;
+			}
+			// TODO: codes for playing playlist. 
+			preparePlaylist();
+		}
+	};
+	private void preparePlaylist()
+	{
+		playlistView.setAdapter(new PlaylistArrayAdaptor(this, R.id.playlist_view, curPlaylistInfo.videos));
+		playlistView.setOnItemClickListener(onPlaylistItemClick);
+		
+		playlistView.setSelection(0);
+		curVideoInfo = (VideoInfo) playlistView.getItemAtPosition(0);
+		prepareVideoInfo();
+	}
+	final OnItemClickListener onPlaylistItemClick = new OnItemClickListener() 
+	{
+		public void onItemClick(AdapterView<?> parent, View view, int position, long id)
+    	{
+			if(position == playlistView.getSelectedItemPosition())
+				return ;
+			
+    		curVideoInfo = (VideoInfo) parent.getItemAtPosition(position);
+    		prepareVideoInfo();
+    	}
+	};
+	
+	
+	// ##########
+	private void initPlayer()
+	{
+		playerView = (SurfaceView) findViewById(R.id.playerView);
+		playerView.getHolder().addCallback(this);
+		
+		player = new IjkMediaPlayer();
+		player.setOnPreparedListener(this);
+		player.setOnBufferingUpdateListener(this);
+		player.setOnVideoSizeChangedListener(this);
+		player.setOnCompletionListener(this);
+		player.setOnSeekCompleteListener(this);
+		player.setOnErrorListener(this);
+		player.setOnInfoListener(this);
+		
+		player.setScreenOnWhilePlaying(true);
+		
+		Intent i = new Intent("com.android.music.musicservicecommand");
+        i.putExtra("command", "pause");
+        sendBroadcast(i);
 	}
 	
 	private void setSnapshot()
 	{
 		snapshot = (ImageView) findViewById(R.id.snapshot);
 		String snapshotUrl ="";
-		Collections.sort(videoInfo.thumbnails);
+		Collections.sort(curVideoInfo.thumbnails);
 		int containerW = playerViewContainer.getWidth();
 		int containerH = playerViewContainer.getHeight();
-		for(ThumbnailsVTX t : videoInfo.thumbnails)
+		for(ThumbnailsVTX t : curVideoInfo.thumbnails)
 		{
-			if(t.width < containerW && t.height < containerH)
-				continue;
-			else
-				snapshotUrl = t.url;
+			snapshotUrl = t.url;
+			if(t.width > containerW || t.height > containerH)
+				break;
 		}
 		ImageManager.ins().loadImage(snapshotUrl, snapshot, 1);
 	}
@@ -300,7 +357,7 @@ public class VTXViewVideoActivity extends Activity
 	
 	////////////// player event listeners
 	
-	public void onPrepared(MediaPlayer mp) {
+	public void onPrepared(IMediaPlayer mp) {
 		if(duration <= 0)
 			duration = player.getDuration();
 		if(videoWidth <= 0)
@@ -308,16 +365,18 @@ public class VTXViewVideoActivity extends Activity
 		if(videoHeight <= 0)
 			videoHeight = player.getVideoHeight();
 		layoutVideo();
+		if(playerView != null)
+			startPlaying();
 	}
 	
-	public void onVideoSizeChanged(MediaPlayer mp, int width, int height) {
+	public void onVideoSizeChanged(IMediaPlayer mp, int width, int height, int sarNum, int sarDen) {
 	}
 	
-	public void onBufferingUpdate(MediaPlayer mp, int percent) {
+	public void onBufferingUpdate(IMediaPlayer mp, int percent) {
 		bufferPercent = percent;
 	}
 
-	public boolean onInfo(MediaPlayer mp, int what, int extra) {
+	public boolean onInfo(IMediaPlayer mp, int what, int extra) {
 		switch (what) {
 		case MediaPlayer.MEDIA_INFO_UNKNOWN :
 			break;
@@ -347,19 +406,24 @@ public class VTXViewVideoActivity extends Activity
 		return false;
 	}
 
-	public boolean onError(MediaPlayer mp, int what, int extra) {
+	public boolean onError(IMediaPlayer mp, int what, int extra) {
 		Log.w(GlobalData.DEBUG_TAG, "onError : " + what + " , "  + extra);
 		return false;
 	}
 
-	public void onSeekComplete(MediaPlayer mp) {
+	public void onSeekComplete(IMediaPlayer mp) {
 		Log.w(GlobalData.DEBUG_TAG, "onSeekComplete : " + mp.getCurrentPosition());
 	}
 
-	public void onCompletion(MediaPlayer mp) 
+	public void onCompletion(IMediaPlayer mp) 
 	{
-		playPauseButton.setPlayState(false);
-//		setPlayingState(false);
+		if(curPlaylistInfo == null)
+			playPauseButton.setPlayState(false);
+		else
+			if(playlistView.getSelectedItemPosition() < curPlaylistInfo.videos.size()-1)
+				playlistView.setSelection(playlistView.getSelectedItemPosition()+1);
+		
+		//TODO: loop
 	}
 
 
@@ -387,15 +451,13 @@ public class VTXViewVideoActivity extends Activity
 
 	private void startPlaying()
 	{
+		Log.w(GlobalData.DEBUG_TAG, "start playing");
 		player.setDisplay(playerView.getHolder());
 		player.start();
 		snapshot.setVisibility(View.INVISIBLE);// 
 		
 		playPauseButton.setPlayState(true);
 
-		autoHide(controlBar, AUTO_HIDE_DELAY_MILLIS);
-		autoHide(menubar, AUTO_HIDE_DELAY_MILLIS);
-		autoHide(floatPanel, AUTO_HIDE_DELAY_MILLIS);
 		startTimer();
 	}
 	
@@ -430,8 +492,8 @@ public class VTXViewVideoActivity extends Activity
 		
 		if(seekBar != null)
 		{
-			seekBar.setMax(player.getDuration());
-			seekBar.setProgress(player.getCurrentPosition());
+			seekBar.setMax((int)player.getDuration());
+			seekBar.setProgress((int)player.getCurrentPosition());
 			seekBar.setSecondaryProgress((int) (bufferPercent * 0.01 * duration));
 			
 			String time = CommonUtil.formatDuration(player.getCurrentPosition());
@@ -468,6 +530,7 @@ public class VTXViewVideoActivity extends Activity
 		}
 	};
 	
+	// TODO: origin, zoom, scale, stretch.
 	private void layoutVideo()
 	{
 		if(player == null || playerView == null)
@@ -573,11 +636,11 @@ public class VTXViewVideoActivity extends Activity
 		
 		layoutVideo();
 		
-		if(floatPanel.getVisibility() == View.VISIBLE)
+		if(playlistPanel.getVisibility() == View.VISIBLE)
 		{
 			// collapse and hide.
-			floatPanel.setLayoutParams(new LinearLayout.LayoutParams(FLOAT_PANEL_MIN_WIDTH, LinearLayout.LayoutParams.MATCH_PARENT));
-			floatPanel.setVisibility(View.INVISIBLE);
+			playlistPanel.setLayoutParams(new LinearLayout.LayoutParams(FLOAT_PANEL_MIN_WIDTH, LinearLayout.LayoutParams.MATCH_PARENT));
+			playlistPanel.setVisibility(View.INVISIBLE);
 		}
 		
 		player.start();
@@ -717,10 +780,18 @@ public class VTXViewVideoActivity extends Activity
 		@Override
 		public void onClick(View v) 
 		{
-			Log.w(GlobalData.DEBUG_TAG, "On PlayerViewContainer Click");
-			autoHide(controlBar, AUTO_HIDE_DELAY_MILLIS);
-			autoHide(floatPanel, AUTO_HIDE_DELAY_MILLIS);
-			autoHide(menubar, AUTO_HIDE_DELAY_MILLIS);
+//			Log.w(GlobalData.DEBUG_TAG, "On PlayerViewContainer Click");
+			if(controlBar.getVisibility() == View.VISIBLE)
+				controlBar.setVisibility(View.INVISIBLE);
+			else
+				autoHide(controlBar, AUTO_HIDE_DELAY_MILLIS);
+			
+			if(menubar.getVisibility() == View.VISIBLE)
+				menubar.setVisibility(View.INVISIBLE);
+			else
+				autoHide(menubar, AUTO_HIDE_DELAY_MILLIS);
+			
+			playlistPanel.setVisibility(View.INVISIBLE);
 		}
 	};
 	private HashMap<View, Runnable> autoHideHash = new HashMap<View, Runnable>();
@@ -749,6 +820,22 @@ public class VTXViewVideoActivity extends Activity
 	}
 	
 	
+//	private View.OnClickListener onMenubarClick = new OnClickListener() {
+//		
+//		@Override
+//		public void onClick(View v) {
+//			Log.w(GlobalData.DEBUG_TAG, "playlistPanel Clicked.");
+//			autoHide(playlistPanel, 3000);
+//		}
+//	};
+	
+	private View.OnClickListener onPlaylistButtonClick = new OnClickListener() 
+	{
+		@Override
+		public void onClick(View v) {
+			autoHide(playlistPanel, 3000);
+		}
+	};
 	
 	
 	@Override
