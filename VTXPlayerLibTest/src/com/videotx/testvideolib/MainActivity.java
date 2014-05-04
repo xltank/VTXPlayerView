@@ -1,6 +1,7 @@
 package com.videotx.testvideolib;
 
 import com.videotx.vtxplayerlib.VTXViewVideoActivity;
+import com.videotx.vtxplayerlib.VTXViewVideoActivityOriginal;
 import com.videotx.vtxplayerlib.constants.MessageConstant;
 import com.videotx.vtxplayerlib.utils.GlobalData;
 
@@ -35,20 +36,33 @@ public class MainActivity extends ActionBarActivity {
 		{
 			@Override
 			public void onClick(View v) {
-				playVideo();
+				playVideo(false);
+			}
+		});
+		
+		Button btn2 = (Button) findViewById(R.id.viewVideoOriginal);
+		btn2.setOnClickListener(new View.OnClickListener() 
+		{
+			@Override
+			public void onClick(View v) {
+				playVideo(true);
 			}
 		});
 	}
 	
-	private void playVideo()
+	private void playVideo(Boolean originally)
 	{
-		Intent intent = new Intent(this, VTXViewVideoActivity.class);
-//		intent.putExtra(MessageConstant.VIDEO_ID, "137687822667612161");
-		intent.putExtra(MessageConstant.PLAYLIST_ID, "94990205768957953");
+		Intent intent;
+		if(originally == false)
+			intent = new Intent(this, VTXViewVideoActivity.class);
+		else
+			intent = new Intent(this, VTXViewVideoActivityOriginal.class);
+		
+		intent.putExtra(MessageConstant.VIDEO_ID, "137687822667612161");
+//		intent.putExtra(MessageConstant.PLAYLIST_ID, "94990205768957953");
 		intent.putExtra(MessageConstant.PUBLISHER_ID, "94986174405279744");
 		startActivity(intent);
 	}
-	
 	
 	
 	

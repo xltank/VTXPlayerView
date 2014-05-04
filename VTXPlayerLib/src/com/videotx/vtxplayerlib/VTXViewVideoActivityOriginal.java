@@ -6,22 +6,20 @@ import java.util.HashMap;
 import java.util.Timer;
 import java.util.TimerTask;
 
-import tv.danmaku.ijk.media.player.IMediaPlayer;
-import tv.danmaku.ijk.media.player.IMediaPlayer.OnBufferingUpdateListener;
-import tv.danmaku.ijk.media.player.IMediaPlayer.OnCompletionListener;
-import tv.danmaku.ijk.media.player.IMediaPlayer.OnErrorListener;
-import tv.danmaku.ijk.media.player.IMediaPlayer.OnInfoListener;
-import tv.danmaku.ijk.media.player.IMediaPlayer.OnPreparedListener;
-import tv.danmaku.ijk.media.player.IMediaPlayer.OnSeekCompleteListener;
-import tv.danmaku.ijk.media.player.IMediaPlayer.OnVideoSizeChangedListener;
-import tv.danmaku.ijk.media.player.IjkMediaPlayer;
+import android.media.MediaPlayer;
+import android.media.MediaPlayer.OnBufferingUpdateListener;
+import android.media.MediaPlayer.OnCompletionListener;
+import android.media.MediaPlayer.OnErrorListener;
+import android.media.MediaPlayer.OnInfoListener;
+import android.media.MediaPlayer.OnPreparedListener;
+import android.media.MediaPlayer.OnSeekCompleteListener;
+import android.media.MediaPlayer.OnVideoSizeChangedListener;
 import android.app.Activity;
 import android.content.Intent;
 import android.content.pm.ActivityInfo;
 import android.content.res.Configuration;
 import android.graphics.Point;
 import android.media.AudioManager;
-import android.media.MediaPlayer;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
@@ -66,7 +64,7 @@ import com.videotx.vtxplayerlib.vo.ThumbnailsVTX;
 import com.videotx.vtxplayerlib.vo.VideoInfo;
 
 
-public class VTXViewVideoActivity extends Activity 
+public class VTXViewVideoActivityOriginal extends Activity 
 	implements Callback, OnPreparedListener, OnBufferingUpdateListener, OnVideoSizeChangedListener,
 	OnCompletionListener, OnSeekCompleteListener, OnErrorListener, OnInfoListener{
 
@@ -80,7 +78,7 @@ public class VTXViewVideoActivity extends Activity
 	private PlaylistInfo curPlaylistInfo;
 	
 	private SurfaceView playerView;
-	private IjkMediaPlayer player;
+	private MediaPlayer player;
 	private AudioManager audioManager;
 	
 //	private VideoInfo videoInfo;
@@ -325,7 +323,7 @@ public class VTXViewVideoActivity extends Activity
 		playerView = (SurfaceView) findViewById(R.id.playerView);
 		playerView.getHolder().addCallback(this);
 		
-		player = new IjkMediaPlayer();
+		player = new MediaPlayer();
 		player.setOnPreparedListener(this);
 		player.setOnBufferingUpdateListener(this);
 		player.setOnVideoSizeChangedListener(this);
@@ -360,7 +358,7 @@ public class VTXViewVideoActivity extends Activity
 	
 	////////////// player event listeners
 	
-	public void onPrepared(IMediaPlayer mp) {
+	public void onPrepared(MediaPlayer mp) {
 		if(duration <= 0)
 			duration = player.getDuration();
 		if(videoWidth <= 0)
@@ -372,53 +370,53 @@ public class VTXViewVideoActivity extends Activity
 			startPlaying();
 	}
 	
-	public void onVideoSizeChanged(IMediaPlayer mp, int width, int height, int sarNum, int sarDen) {
+	public void onVideoSizeChanged(MediaPlayer mp, int width, int height) {
 	}
 	
-	public void onBufferingUpdate(IMediaPlayer mp, int percent) {
+	public void onBufferingUpdate(MediaPlayer mp, int percent) {
 		bufferPercent = percent;
 	}
 
-	public boolean onInfo(IMediaPlayer mp, int what, int extra) {
-//		switch (what) {
-//			case MediaPlayer.MEDIA_INFO_UNKNOWN :
-//				break;
-//			case MediaPlayer.MEDIA_INFO_VIDEO_TRACK_LAGGING :
-//				break;
-//			case MediaPlayer.MEDIA_INFO_VIDEO_RENDERING_START :
-//				Log.w(GlobalData.DEBUG_TAG, "onInfo : MEDIA_INFO_VIDEO_RENDERING_START");
-//				break;
-//			case MediaPlayer.MEDIA_INFO_BUFFERING_START :
-//				Log.w(GlobalData.DEBUG_TAG, "onInfo : MEDIA_INFO_BUFFERING_START");
-//				break;
-//			case MediaPlayer.MEDIA_INFO_BUFFERING_END :
-//				Log.w(GlobalData.DEBUG_TAG, "onInfo : MEDIA_INFO_BUFFERING_END");
-//				break;
-//			case MediaPlayer.MEDIA_INFO_BAD_INTERLEAVING :
-//				break;
-//			case MediaPlayer.MEDIA_INFO_NOT_SEEKABLE :
-//				break;
-//			case MediaPlayer.MEDIA_INFO_METADATA_UPDATE :
-//				Log.w(GlobalData.DEBUG_TAG, "onInfo : MEDIA_INFO_METADATA_UPDATE");
-//				break;
-//			case MediaPlayer.MEDIA_INFO_UNSUPPORTED_SUBTITLE :
-//				break;
-//			case MediaPlayer.MEDIA_INFO_SUBTITLE_TIMED_OUT :
-//				break;
-//		}
+	public boolean onInfo(MediaPlayer mp, int what, int extra) {
+		switch (what) {
+		case MediaPlayer.MEDIA_INFO_UNKNOWN :
+			break;
+		case MediaPlayer.MEDIA_INFO_VIDEO_TRACK_LAGGING :
+			break;
+		case MediaPlayer.MEDIA_INFO_VIDEO_RENDERING_START :
+			Log.w(GlobalData.DEBUG_TAG, "onInfo : MEDIA_INFO_VIDEO_RENDERING_START");
+			break;
+		case MediaPlayer.MEDIA_INFO_BUFFERING_START :
+			Log.w(GlobalData.DEBUG_TAG, "onInfo : MEDIA_INFO_BUFFERING_START");
+			break;
+		case MediaPlayer.MEDIA_INFO_BUFFERING_END :
+			Log.w(GlobalData.DEBUG_TAG, "onInfo : MEDIA_INFO_BUFFERING_END");
+			break;
+		case MediaPlayer.MEDIA_INFO_BAD_INTERLEAVING :
+			break;
+		case MediaPlayer.MEDIA_INFO_NOT_SEEKABLE :
+			break;
+		case MediaPlayer.MEDIA_INFO_METADATA_UPDATE :
+			Log.w(GlobalData.DEBUG_TAG, "onInfo : MEDIA_INFO_METADATA_UPDATE");
+			break;
+		case MediaPlayer.MEDIA_INFO_UNSUPPORTED_SUBTITLE :
+			break;
+		case MediaPlayer.MEDIA_INFO_SUBTITLE_TIMED_OUT :
+			break;
+		}
 		return false;
 	}
 
-	public boolean onError(IMediaPlayer mp, int what, int extra) {
+	public boolean onError(MediaPlayer mp, int what, int extra) {
 		Log.w(GlobalData.DEBUG_TAG, "onError : " + what + " , "  + extra);
 		return false;
 	}
 
-	public void onSeekComplete(IMediaPlayer mp) {
+	public void onSeekComplete(MediaPlayer mp) {
 		Log.w(GlobalData.DEBUG_TAG, "onSeekComplete : " + mp.getCurrentPosition());
 	}
 
-	public void onCompletion(IMediaPlayer mp) 
+	public void onCompletion(MediaPlayer mp) 
 	{
 		if(curPlaylistInfo == null)
 			playPauseButton.setPlayState(false);
@@ -434,7 +432,7 @@ public class VTXViewVideoActivity extends Activity
 	
 	@Override
 	public void surfaceChanged(SurfaceHolder holder, int format, int width, int height) {
-//		Log.w(GlobalData.DEBUG_TAG, "surface Changed");
+		Log.w(GlobalData.DEBUG_TAG, "surface Changed");
 	}
 	// when activity is paused, surface is destroyed.
 	@Override
@@ -718,7 +716,7 @@ public class VTXViewVideoActivity extends Activity
 						try {
 							curBrightness = System.getInt(getContentResolver(), System.SCREEN_BRIGHTNESS);
 							LayoutParams lp = getWindow().getAttributes();
-//							Log.w(GlobalData.DEBUG_TAG, "curBrightness " + curBrightness + ", " + lp.screenBrightness);
+							Log.w(GlobalData.DEBUG_TAG, "curBrightness " + curBrightness + ", " + lp.screenBrightness);
 						}
 						catch (SettingNotFoundException e) {
 							e.printStackTrace();
@@ -781,7 +779,7 @@ public class VTXViewVideoActivity extends Activity
 		@Override
 		public void onClick(View v) 
 		{
-			Log.w(GlobalData.DEBUG_TAG, "On PlayerView Click");
+			Log.w(GlobalData.DEBUG_TAG, "On PlayerViewContainer Click");
 			if(controlBar.getVisibility() == View.VISIBLE)
 				controlBar.setVisibility(View.INVISIBLE);
 			else
@@ -799,28 +797,27 @@ public class VTXViewVideoActivity extends Activity
 	private Handler mHideHandler = new Handler();
 	private void autoHide(View v, int duration)
 	{
-		v.setVisibility(View.VISIBLE);
-//		Log.w(GlobalData.DEBUG_TAG, "autohide : " + v.getTag());
-//		final View view = v;
-//		Runnable mHideRunnable = new Runnable() {
-//			@Override
-//			public void run() {
-//				Log.w(GlobalData.DEBUG_TAG, "hid : " + view.getTag());
-//				view.setVisibility(View.INVISIBLE);
-//			}
-//		};
-//		
-//		Runnable lastRunnable = autoHideHash.get(v);
-//		if(lastRunnable != null)
-//		{
-//			Log.w(GlobalData.DEBUG_TAG, "autohide : exists " + v.getTag());
-//			autoHideHash.remove(v);
-//			mHideHandler.removeCallbacks(lastRunnable);
-//		}
-//
-//		autoHideHash.put(v, mHideRunnable);
-//		mHideHandler.postDelayed(mHideRunnable, duration);
-//		view.setVisibility(View.VISIBLE);
+		Log.w(GlobalData.DEBUG_TAG, "autohide : " + v.getTag());
+		final View view = v;
+		Runnable mHideRunnable = new Runnable() {
+			@Override
+			public void run() {
+				Log.w(GlobalData.DEBUG_TAG, "hid : " + view.getTag());
+				view.setVisibility(View.INVISIBLE);
+			}
+		};
+		
+		Runnable lastRunnable = autoHideHash.get(v);
+		if(lastRunnable != null)
+		{
+			Log.w(GlobalData.DEBUG_TAG, "autohide : exists " + v.getTag());
+			autoHideHash.remove(v);
+			mHideHandler.removeCallbacks(lastRunnable);
+		}
+
+		autoHideHash.put(v, mHideRunnable);
+		mHideHandler.postDelayed(mHideRunnable, duration);
+		view.setVisibility(View.VISIBLE);
 	}
 	
 	

@@ -32,6 +32,7 @@
 	    
 	    <RelativeLayout 
 	        android:id="@+id/slide_seek_hint"
+	        android:tag="slide_seek_hint"
 	        android:layout_width="wrap_content"
 	        android:layout_height="wrap_content"
 	        android:visibility="invisible"
@@ -49,6 +50,7 @@
 	    
 	    <LinearLayout 
 	        android:id="@+id/slide_volume_hint"
+	        android:tag="slide_volume_hint"
 	        android:layout_width="wrap_content"
 	        android:layout_height="wrap_content"
 	        android:gravity="center_vertical"
@@ -73,6 +75,7 @@
 	    
 	    <LinearLayout 
 	        android:id="@+id/slide_brightness_hint"
+	        android:tag="slide_brightness_hint"
 	        android:layout_width="wrap_content"
 	        android:layout_height="wrap_content"
 	        android:gravity="center_vertical"
@@ -115,9 +118,9 @@
 	    
 	    <LinearLayout
 	        android:id="@+id/playlist_panel"
-	        android:layout_width="200dp"
+	        android:tag="playlistPanel"
+	        android:layout_width="100dp"
 	        android:layout_height="match_parent"
-	        android:visibility="invisible"
 	        android:layout_alignParentRight="true"
 	        android:orientation="horizontal"
 	        >
@@ -133,6 +136,7 @@
 	    
 	    <LinearLayout 
             android:id="@+id/menuBar"
+            android:tag="menuBar"
 	        android:orientation="horizontal"
 			android:layout_width="match_parent"
 	    	android:layout_height="30dp"
@@ -170,6 +174,7 @@
         
         <LinearLayout 
             android:id="@+id/controlBar"
+            android:tag="controlBar"
 	        android:orientation="vertical"
 			android:layout_width="match_parent"
 	    	android:layout_height="wrap_content"

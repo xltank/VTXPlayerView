@@ -12,7 +12,15 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="View Video"
-        android:layout_centerInParent="true"
+        android:layout_marginTop="100dp"
+        />
+    
+    <Button 
+        android:id="@+id/viewVideoOriginal"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="View Video Original"
+        android:layout_marginTop="200dp"
         />
     
 </RelativeLayout>
