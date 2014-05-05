@@ -9,20 +9,27 @@
     android:paddingTop="@dimen/activity_vertical_margin"
     tools:context=".VTXViewVideoActivity" >
 
-    <com.videotx.vtxplayerlib.comps.CustomRelativeLayout
-        android:id="@+id/playerContainer"
+    <RelativeLayout 
+        android:id="@+id/container"
         android:layout_width="match_parent"
     	android:layout_height="0dp"
     	android:layout_weight="0.4"
-    	android:background="@color/player_view_container_bg"
     	>
-		
-        <SurfaceView 
-            android:id="@+id/playerView"
+    	
+	    <com.videotx.vtxplayerlib.comps.CustomRelativeLayout
+	        android:id="@+id/playerViewContainer"
 	        android:layout_width="match_parent"
-	        android:layout_height="match_parent"
-	        android:layout_centerInParent="true"
-	        />
+	    	android:layout_height="match_parent"
+	    	android:background="@color/player_view_container_bg"
+	    	>
+			
+	        <SurfaceView 
+	            android:id="@+id/playerView"
+		        android:layout_width="match_parent"
+		        android:layout_height="match_parent"
+		        android:layout_centerInParent="true"
+		        />
+		</com.videotx.vtxplayerlib.comps.CustomRelativeLayout>
 	    <ImageView
 	        android:id="@+id/snapshot"
 	    	android:layout_width="match_parent"
@@ -123,6 +130,7 @@
 	        android:layout_height="match_parent"
 	        android:layout_alignParentRight="true"
 	        android:orientation="horizontal"
+	        android:background="#FF0000"
 	        >
 
 	        <ListView
@@ -258,7 +266,7 @@
 		        </RelativeLayout>
 			</RelativeLayout>
     	</LinearLayout>
-   	</com.videotx.vtxplayerlib.comps.CustomRelativeLayout>
+    </RelativeLayout>
     
     <LinearLayout android:id="@+id/gap"
         android:orientation="horizontal"

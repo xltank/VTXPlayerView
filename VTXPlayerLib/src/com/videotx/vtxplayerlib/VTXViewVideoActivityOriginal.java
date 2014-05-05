@@ -86,7 +86,7 @@ public class VTXViewVideoActivityOriginal extends Activity
 	
 	private Timer tikerTimer;
 
-	private CustomRelativeLayout playerViewContainer;
+	private CustomRelativeLayout container;
 	private LinearLayout controlBar;
 	private ImageView snapshot;
 	private View slideSeekHint;
@@ -150,8 +150,8 @@ public class VTXViewVideoActivityOriginal extends Activity
 		audioManager = (AudioManager) getSystemService(AUDIO_SERVICE);
 		maxVolumeIndex = audioManager.getStreamMaxVolume(AudioManager.STREAM_MUSIC);
 		
-		playerViewContainer = (CustomRelativeLayout) findViewById(R.id.playerContainer);
-		playerViewContainer.setOnSizeChangedListener(onPlayerViewContainerSizeChcanged);
+		container = (CustomRelativeLayout) findViewById(R.id.container);
+		container.setOnSizeChangedListener(onPlayerViewContainerSizeChcanged);
 		
 		slideSeekHint = findViewById(R.id.slide_seek_hint);
 		slideSeekTime = (TextView) findViewById(R.id.slide_seek_time);
@@ -344,8 +344,8 @@ public class VTXViewVideoActivityOriginal extends Activity
 		snapshot = (ImageView) findViewById(R.id.snapshot);
 		String snapshotUrl ="";
 		Collections.sort(curVideoInfo.thumbnails);
-		int containerW = playerViewContainer.getWidth();
-		int containerH = playerViewContainer.getHeight();
+		int containerW = container.getWidth();
+		int containerH = container.getHeight();
 		for(ThumbnailsVTX t : curVideoInfo.thumbnails)
 		{
 			snapshotUrl = t.url;
@@ -511,8 +511,8 @@ public class VTXViewVideoActivityOriginal extends Activity
 		@Override
 		public void onEvent() 
 		{
-			int w = playerViewContainer.getWidth();
-			int h = playerViewContainer.getHeight();
+			int w = container.getWidth();
+			int h = container.getHeight();
 			if(oldW != w || oldH != h)
 			{
 				oldW = w;
@@ -673,7 +673,7 @@ public class VTXViewVideoActivityOriginal extends Activity
 			switch(action) {
 		        case (MotionEvent.ACTION_DOWN) :
 					Log.w(GlobalData.DEBUG_TAG, "On Touch ACTION_DOWN");
-	        		area = event.getX()*2 < playerViewContainer.getWidth() ? 1 : 2;
+	        		area = event.getX()*2 < container.getWidth() ? 1 : 2;
 		        	lastX = curX;
 		        	lastY = curY;
 		            return false;

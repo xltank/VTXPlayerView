@@ -152,8 +152,9 @@ public class VTXViewVideoActivity extends Activity
 		audioManager = (AudioManager) getSystemService(AUDIO_SERVICE);
 		maxVolumeIndex = audioManager.getStreamMaxVolume(AudioManager.STREAM_MUSIC);
 		
-		playerViewContainer = (CustomRelativeLayout) findViewById(R.id.playerContainer);
+		playerViewContainer = (CustomRelativeLayout) findViewById(R.id.playerViewContainer);
 		playerViewContainer.setOnSizeChangedListener(onPlayerViewContainerSizeChcanged);
+		playerViewContainer.setOnClickListener(onPlayerViewClickListener);
 		
 		slideSeekHint = findViewById(R.id.slide_seek_hint);
 		slideSeekTime = (TextView) findViewById(R.id.slide_seek_time);
@@ -448,7 +449,7 @@ public class VTXViewVideoActivity extends Activity
 	public void surfaceCreated(SurfaceHolder holder) {
 		Log.w(GlobalData.DEBUG_TAG, "surface Created");
 		playerView.setOnTouchListener(onPlayerViewTouchListener);
-		playerView.setOnClickListener(onPlayerViewClickListener);
+//		playerView.setOnClickListener(onPlayerViewClickListener);
 		startPlaying();
 	}
 
@@ -792,7 +793,7 @@ public class VTXViewVideoActivity extends Activity
 			else
 				autoHide(menubar, AUTO_HIDE_DELAY_MILLIS);
 			
-//			playlistPanel.setVisibility(View.INVISIBLE);
+			playlistPanel.setVisibility(View.INVISIBLE);
 		}
 	};
 	private HashMap<View, Runnable> autoHideHash = new HashMap<View, Runnable>();
@@ -839,7 +840,10 @@ public class VTXViewVideoActivity extends Activity
 		public void onClick(View v) {
 			Log.w(GlobalData.DEBUG_TAG, "On onPlaylistButton Click");
 //			autoHide(playlistPanel, 3000);
-			playlistPanel.setVisibility(View.VISIBLE);
+			if(playlistPanel.getVisibility() == View.VISIBLE)
+				playlistPanel.setVisibility(View.INVISIBLE);
+			else
+				playlistPanel.setVisibility(View.VISIBLE);
 		}
 	};
 	
