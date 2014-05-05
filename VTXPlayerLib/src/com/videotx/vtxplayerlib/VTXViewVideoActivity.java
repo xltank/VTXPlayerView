@@ -154,6 +154,7 @@ public class VTXViewVideoActivity extends Activity
 		
 		playerViewContainer = (CustomRelativeLayout) findViewById(R.id.playerViewContainer);
 		playerViewContainer.setOnSizeChangedListener(onPlayerViewContainerSizeChcanged);
+		playerViewContainer.setOnTouchListener(onPlayerViewTouchListener);
 		playerViewContainer.setOnClickListener(onPlayerViewClickListener);
 		
 		slideSeekHint = findViewById(R.id.slide_seek_hint);
@@ -441,14 +442,14 @@ public class VTXViewVideoActivity extends Activity
 	@Override
 	public void surfaceDestroyed(SurfaceHolder holder) {
 		Log.w(GlobalData.DEBUG_TAG, "surface Destroyed");
-		playerView.setOnTouchListener(null);
-		playerView.setOnClickListener(null);
+//		playerView.setOnTouchListener(null);
+//		playerView.setOnClickListener(null);
 	}
 	// when activity is started/restarted, surface is created.
 	@Override
 	public void surfaceCreated(SurfaceHolder holder) {
 		Log.w(GlobalData.DEBUG_TAG, "surface Created");
-		playerView.setOnTouchListener(onPlayerViewTouchListener);
+//		playerView.setOnTouchListener(onPlayerViewTouchListener);
 //		playerView.setOnClickListener(onPlayerViewClickListener);
 		startPlaying();
 	}
@@ -640,10 +641,7 @@ public class VTXViewVideoActivity extends Activity
 		
 		layoutVideo();
 		
-		if(playlistPanel.getVisibility() == View.VISIBLE)
-		{
-			playlistPanel.setVisibility(View.INVISIBLE);
-		}
+		playlistPanel.setVisibility(View.INVISIBLE);
 		
 		player.start();
 	}
@@ -783,14 +781,14 @@ public class VTXViewVideoActivity extends Activity
 		public void onClick(View v) 
 		{
 			Log.w(GlobalData.DEBUG_TAG, "On PlayerView Click");
-			if(controlBar.getVisibility() == View.VISIBLE)
-				controlBar.setVisibility(View.INVISIBLE);
-			else
+//			if(controlBar.getVisibility() == View.VISIBLE)
+//				controlBar.setVisibility(View.INVISIBLE);
+//			else
 				autoHide(controlBar, AUTO_HIDE_DELAY_MILLIS);
 			
-			if(menubar.getVisibility() == View.VISIBLE)
-				menubar.setVisibility(View.INVISIBLE);
-			else
+//			if(menubar.getVisibility() == View.VISIBLE)
+//				menubar.setVisibility(View.INVISIBLE);
+//			else
 				autoHide(menubar, AUTO_HIDE_DELAY_MILLIS);
 			
 			playlistPanel.setVisibility(View.INVISIBLE);
@@ -800,28 +798,33 @@ public class VTXViewVideoActivity extends Activity
 	private Handler mHideHandler = new Handler();
 	private void autoHide(View v, int duration)
 	{
-		v.setVisibility(View.VISIBLE);
-//		Log.w(GlobalData.DEBUG_TAG, "autohide : " + v.getTag());
-//		final View view = v;
-//		Runnable mHideRunnable = new Runnable() {
-//			@Override
-//			public void run() {
-//				Log.w(GlobalData.DEBUG_TAG, "hid : " + view.getTag());
-//				view.setVisibility(View.INVISIBLE);
-//			}
-//		};
-//		
-//		Runnable lastRunnable = autoHideHash.get(v);
-//		if(lastRunnable != null)
-//		{
-//			Log.w(GlobalData.DEBUG_TAG, "autohide : exists " + v.getTag());
-//			autoHideHash.remove(v);
-//			mHideHandler.removeCallbacks(lastRunnable);
-//		}
-//
-//		autoHideHash.put(v, mHideRunnable);
-//		mHideHandler.postDelayed(mHideRunnable, duration);
-//		view.setVisibility(View.VISIBLE);
+		Log.w(GlobalData.DEBUG_TAG, "autohide : " + v.getTag());
+		final View view = v;
+		Runnable mHideRunnable = new Runnable() {
+			@Override
+			public void run() {
+				Log.w(GlobalData.DEBUG_TAG, "hid : " + view.getTag());
+				view.setVisibility(View.INVISIBLE);
+			}
+		};
+		
+		Runnable lastRunnable = autoHideHash.get(v);
+		if(lastRunnable != null)
+		{
+			Log.w(GlobalData.DEBUG_TAG, "autohide : exists " + v.getTag());
+			autoHideHash.remove(v);
+			mHideHandler.removeCallbacks(lastRunnable);
+		}
+		if(v.getVisibility() == View.VISIBLE)
+		{
+			v.setVisibility(View.INVISIBLE);
+		}
+		else
+		{
+			autoHideHash.put(v, mHideRunnable);
+			mHideHandler.postDelayed(mHideRunnable, duration);
+			view.setVisibility(View.VISIBLE);
+		}
 	}
 	
 	
@@ -855,10 +858,10 @@ public class VTXViewVideoActivity extends Activity
 		
 		if(newConfig.orientation == Configuration.ORIENTATION_LANDSCAPE)
 		{
-			
-		}else if(newConfig.orientation == Configuration.ORIENTATION_LANDSCAPE)
+			toFullScreen();
+		}else if(newConfig.orientation == Configuration.ORIENTATION_PORTRAIT)
 		{
-			
+			exitFullScreen();
 		}
 	}
 	
