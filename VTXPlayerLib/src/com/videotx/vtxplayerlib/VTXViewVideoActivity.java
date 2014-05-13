@@ -300,7 +300,6 @@ public class VTXViewVideoActivity extends Activity
 				Log.e(GlobalData.DEBUG_TAG, "ERROR: video info error or no playable rendition");
 				return ;
 			}
-			// TODO: codes for playing playlist. 
 			preparePlaylist();
 		}
 	};
@@ -313,7 +312,8 @@ public class VTXViewVideoActivity extends Activity
 	}
 	
 	private void gotoPlaylistIndex(int index)
-	{// TODO: highlight selected video item.
+	{
+		// TODO: highlight selected video item.
 //		playlistView.setItemChecked(0, true);
 //		playlistView.setSelection(0);
 //		playlistView.smoothScrollToPosition(0);
@@ -553,7 +553,7 @@ public class VTXViewVideoActivity extends Activity
 		}
 	};
 	
-	// TODO: origin, zoom, scale, stretch.
+	// TODO: origin, zoom, scale, stretch; or 50%, 75%, 100%, stretch;
 	private void layoutVideo()
 	{
 		if(player == null || playerView == null)
@@ -666,7 +666,8 @@ public class VTXViewVideoActivity extends Activity
 		player.start();
 	}
 	
-	
+	// TODO: test MOVEMENT_THRESHOLD
+	private final int MOVEMENT_THRESHOLD = 10; 
 	private final int LEFT = 1;
 	private final int RIGHT = 2;
 	private final int TOP = 3;
@@ -675,7 +676,8 @@ public class VTXViewVideoActivity extends Activity
 	{	
 		int direction=0; // left=1, right=2, top=3, bottom=4;
 		int area=0; // left part=1, right part=2;
-		float value=0;
+		float value=0; // xValue or yValue;
+		float firstDelta=0; // for movement threshold in pixel to prevent click from touch. 
 		float lastX=0;
 		float lastY=0;
 		float timeDelta=0;
@@ -687,7 +689,7 @@ public class VTXViewVideoActivity extends Activity
 		
 		@Override
 		public boolean onTouch(View v, MotionEvent event) 
-		{ //TODO: a movement threshold in pixel to prevent click from touch. 
+		{ 
 			int action = event.getActionMasked();
 			float curX = event.getX();
 			float curY = event.getY();
@@ -705,8 +707,12 @@ public class VTXViewVideoActivity extends Activity
 		        	float yValue = curY - lastY;
 		        	if(xValue == 0 && yValue == 0) // first move event.
 		        		return true;
-//		        	Log.w(GlobalData.DEBUG_TAG, (curX - lastX) + ", " + xValue);
-		        	
+		        	if(firstDelta == 0)
+	        		{
+		        		firstDelta = Math.max(xValue, yValue);
+		        		if(firstDelta < MOVEMENT_THRESHOLD)
+		        			return true;
+	        		}
 		        	if(direction == 0)
 		        	{
 			        	float diff = Math.abs(xValue) - Math.abs(yValue);
@@ -726,7 +732,7 @@ public class VTXViewVideoActivity extends Activity
 		        		timeDelta += value * 50; // time delta = 1/20 * xValue.
 		        		timeTarget = player.getCurrentPosition() + timeDelta;
 		        		if(timeTarget < 0 || timeTarget > duration)
-		        			return true; // TODO : or close this touch action.
+		        			return true;
 		        		slideSeekTime.setText(CommonUtil.formatDuration((long)timeTarget)+"/"+CommonUtil.formatDuration((long)duration));
 		        		autoHide(slideSeekHint, 1000);
 		        	}
@@ -744,7 +750,7 @@ public class VTXViewVideoActivity extends Activity
 						}
 		        		brightnessTarget = curBrightness + brightnessDelta;
 		        		if(brightnessTarget < 0 || brightnessTarget > 255)
-		        			return true; // TODO : or close this touch action.
+		        			return true;
 //		        		Log.w(GlobalData.DEBUG_TAG, brightnessDelta + ", " + curBrightness + ", " + brightnessTarget);
 		        		LayoutParams lp = getWindow().getAttributes();
 		        		lp.screenBrightness = brightnessTarget/255;
@@ -769,6 +775,7 @@ public class VTXViewVideoActivity extends Activity
 		            return true;
 		        case (MotionEvent.ACTION_UP) :
 		        	Log.w(GlobalData.DEBUG_TAG, "On Touch ACTION_UP");
+		        	firstDelta = 0;
 		        	if(direction == LEFT || direction == RIGHT)
 		        		player.seekTo((int)(player.getCurrentPosition() + timeDelta));
 //		        	else if(area == 1)
@@ -783,6 +790,7 @@ public class VTXViewVideoActivity extends Activity
 		            return false;
 		        case (MotionEvent.ACTION_OUTSIDE) :
 		        	Log.w(GlobalData.DEBUG_TAG, "On Touch ACTION_OUTSIDE");
+		        	firstDelta = 0;
 		        	direction = 0;
 		        	timeDelta = 0;
 		        	volumeDelta = 0;
