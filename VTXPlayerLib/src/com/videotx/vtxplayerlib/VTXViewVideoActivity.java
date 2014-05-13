@@ -115,12 +115,16 @@ public class VTXViewVideoActivity extends Activity
 	private LinearLayout playlistPanel;
 	private ListView playlistView;
 	
+	private Boolean isFullscreenState = false;
+	
 	private int bufferPercent;
 	private long duration;
 	private int videoWidth;
 	private int videoHeight;
 	
 	private int maxVolumeIndex;
+	
+	private int playlistIndex=0;
 	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -252,7 +256,8 @@ public class VTXViewVideoActivity extends Activity
 		{
 			initPlayer();
 			autoHide(controlBar, AUTO_HIDE_DELAY_MILLIS);
-			autoHide(menubar, AUTO_HIDE_DELAY_MILLIS);
+			if(isFullscreenState == true)
+				autoHide(menubar, AUTO_HIDE_DELAY_MILLIS);
 //			autoHide(playlistPanel, AUTO_HIDE_DELAY_MILLIS);
 		}
 		
@@ -304,10 +309,18 @@ public class VTXViewVideoActivity extends Activity
 		playlistView.setAdapter(new PlaylistArrayAdaptor(this, R.id.playlist_view, curPlaylistInfo.videos));
 		playlistView.setOnItemClickListener(onPlaylistItemClick);
 		
-		playlistView.setSelection(0);
-		curVideoInfo = (VideoInfo) playlistView.getItemAtPosition(0);
+		gotoPlaylistIndex(0);
+	}
+	
+	private void gotoPlaylistIndex(int index)
+	{// TODO: highlight selected video item.
+//		playlistView.setItemChecked(0, true);
+//		playlistView.setSelection(0);
+//		playlistView.smoothScrollToPosition(0);
+		curVideoInfo = (VideoInfo) curPlaylistInfo.videos.get(index);
 		prepareVideoInfo();
 	}
+	
 	final OnItemClickListener onPlaylistItemClick = new OnItemClickListener() 
 	{
 		public void onItemClick(AdapterView<?> parent, View view, int position, long id)
@@ -315,8 +328,7 @@ public class VTXViewVideoActivity extends Activity
 			if(position == playlistView.getSelectedItemPosition())
 				return ;
 			
-    		curVideoInfo = (VideoInfo) parent.getItemAtPosition(position);
-    		prepareVideoInfo();
+    		gotoPlaylistIndex(position);
     	}
 	};
 	
@@ -422,13 +434,19 @@ public class VTXViewVideoActivity extends Activity
 
 	public void onCompletion(IMediaPlayer mp) 
 	{
-		if(curPlaylistInfo == null)
+		Log.w(GlobalData.DEBUG_TAG, "onComplete ");
+		if(curPlaylistInfo == null) // video
 			playPauseButton.setPlayState(false);
-		else
-			if(playlistView.getSelectedItemPosition() < curPlaylistInfo.videos.size()-1)
-				playlistView.setSelection(playlistView.getSelectedItemPosition()+1);
+		else // playlist
+			if(playlistIndex < curPlaylistInfo.videos.size()-1)
+			{
+				gotoPlaylistIndex(playlistIndex+1);
+			}else
+			{
+				// TODO: do sth ???
+			}
 		
-		//TODO: loop
+		//TODO: loop when it's video, but not playlist.
 	}
 
 
@@ -600,6 +618,7 @@ public class VTXViewVideoActivity extends Activity
 	
 	private void toFullScreen()
 	{
+		isFullscreenState = true;
 		player.pause();
 		
 		setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE);
@@ -627,6 +646,7 @@ public class VTXViewVideoActivity extends Activity
 	
 	private void exitFullScreen()
 	{
+		isFullscreenState = false;
 		player.pause();
 		
 		setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
@@ -789,6 +809,7 @@ public class VTXViewVideoActivity extends Activity
 //			if(menubar.getVisibility() == View.VISIBLE)
 //				menubar.setVisibility(View.INVISIBLE);
 //			else
+			if(isFullscreenState == true)
 				autoHide(menubar, AUTO_HIDE_DELAY_MILLIS);
 			
 			playlistPanel.setVisibility(View.INVISIBLE);
@@ -845,7 +866,7 @@ public class VTXViewVideoActivity extends Activity
 //			autoHide(playlistPanel, 3000);
 			if(playlistPanel.getVisibility() == View.VISIBLE)
 				playlistPanel.setVisibility(View.INVISIBLE);
-			else
+			else if(isFullscreenState == true)
 				playlistPanel.setVisibility(View.VISIBLE);
 		}
 	};

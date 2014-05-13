@@ -58,8 +58,8 @@ public class MainActivity extends ActionBarActivity {
 		else
 			intent = new Intent(this, VTXViewVideoActivityOriginal.class);
 		
-		intent.putExtra(MessageConstant.VIDEO_ID, "137687822667612161");
-//		intent.putExtra(MessageConstant.PLAYLIST_ID, "94990205768957953");
+//		intent.putExtra(MessageConstant.VIDEO_ID, "137687822667612161");
+		intent.putExtra(MessageConstant.PLAYLIST_ID, "94990205768957953");
 		intent.putExtra(MessageConstant.PUBLISHER_ID, "94986174405279744");
 		startActivity(intent);
 	}

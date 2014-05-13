@@ -41,6 +41,8 @@ public class PlaylistArrayAdaptor extends ArrayAdapter<VideoInfo>
 		if(video.renditions.size() > 0)
 			durationText.setText(CommonUtil.formatDuration(video.renditions.get(0).duration));
 		
+		
+		
 		return convertView;
 	}
 }
