@@ -197,9 +197,8 @@ public class VTXViewVideoActivity extends Activity
 		playlistButton.setOnClickListener(onPlaylistButtonClick);
 //		menuButton = (Button) findViewById(R.id.menu_button);
 		
-		playlistView = (ListView) findViewById(R.id.playlist_view);
-		
 		playlistPanel = (LinearLayout) findViewById(R.id.playlist_panel);
+		playlistView = (ListView) findViewById(R.id.playlist_view);
 	}
 	
 	
@@ -314,7 +313,7 @@ public class VTXViewVideoActivity extends Activity
 	private void gotoPlaylistIndex(int index)
 	{
 		// TODO: highlight selected video item.
-//		playlistView.setItemChecked(0, true);
+		playlistView.setItemChecked(0, true);
 //		playlistView.setSelection(0);
 //		playlistView.smoothScrollToPosition(0);
 		curVideoInfo = (VideoInfo) curPlaylistInfo.videos.get(index);
@@ -329,6 +328,7 @@ public class VTXViewVideoActivity extends Activity
 				return ;
 			
     		gotoPlaylistIndex(position);
+    		// TODO: highlight selected item
     	}
 	};
 	
