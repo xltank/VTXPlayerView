@@ -5,293 +5,276 @@
     android:orientation="vertical"
     tools:context=".VTXViewVideoActivity" >
 
-    <RelativeLayout 
+    <RelativeLayout
         android:id="@+id/container"
         android:layout_width="match_parent"
-    	android:layout_height="0dp"
-    	android:layout_weight="0.4"
-    	>
-    	
-	    <com.videotx.vtxplayerlib.comps.CustomRelativeLayout
-	        android:id="@+id/playerViewContainer"
-	        android:layout_width="match_parent"
-	    	android:layout_height="match_parent"
-	    	android:background="@color/player_view_container_bg"
-	    	>
-			
-	        <SurfaceView 
-	            android:id="@+id/playerView"
-		        android:layout_width="match_parent"
-		        android:layout_height="match_parent"
-		        android:layout_centerInParent="true"
-		        />
-		</com.videotx.vtxplayerlib.comps.CustomRelativeLayout>
-	    <ImageView
-	        android:id="@+id/snapshot"
-	    	android:layout_width="match_parent"
-	        android:layout_height="match_parent"
-	        android:contentDescription="@string/button_desc"
-	    	/>
-	    
-	    <RelativeLayout 
-	        android:id="@+id/slide_seek_hint"
-	        android:tag="slide_seek_hint"
-	        android:layout_width="wrap_content"
-	        android:layout_height="wrap_content"
-	        android:visibility="invisible"
-	        android:padding="5dp"
-	        android:background="#E6E6E6">
-	        <TextView 
-	            android:id="@+id/slide_seek_time"
-	            android:layout_width="wrap_content"
-	        	android:layout_height="wrap_content"
-	        	android:text="@string/play_time_default"
-	        	android:textSize="28sp"
-	        	android:textColor="#A8A8A8"
-	            />
-	    </RelativeLayout>
-	    
-	    <LinearLayout 
-	        android:id="@+id/slide_volume_hint"
-	        android:tag="slide_volume_hint"
-	        android:layout_width="wrap_content"
-	        android:layout_height="wrap_content"
-	        android:gravity="center_vertical"
-	        android:visibility="invisible"
-	        android:padding="5dp"
-	        android:background="#E6E6E6">
-	        <ImageView 
-	            android:layout_width="wrap_content"
-	        	android:layout_height="wrap_content"
-	        	android:src="@drawable/volume_hint"
-	        	android:contentDescription="@string/button_desc"
-	        	/>
-	        <TextView 
-	            android:id="@+id/slide_volume"
-	            android:layout_width="wrap_content"
-	        	android:layout_height="wrap_content"
-	        	android:text="@string/full_percent"
-	        	android:textSize="28sp"
-	        	android:textColor="#A8A8A8"
-	            />
-	    </LinearLayout>
-	    
-	    <LinearLayout 
-	        android:id="@+id/slide_brightness_hint"
-	        android:tag="slide_brightness_hint"
-	        android:layout_width="wrap_content"
-	        android:layout_height="wrap_content"
-	        android:gravity="center_vertical"
-	        android:visibility="invisible"
-	        android:padding="5dp"
-	        android:background="#E6E6E6">
-	        <ImageView 
-	            android:layout_width="wrap_content"
-	        	android:layout_height="wrap_content"
-	        	android:src="@drawable/brightness_hint"
-	        	android:contentDescription="@string/button_desc"
-	        	/>
-	        <TextView 
-	            android:id="@+id/slide_brightness"
-	            android:layout_width="wrap_content"
-	        	android:layout_height="wrap_content"
-	        	android:text="@string/full_percent"
-	        	android:textSize="28sp"
-	        	android:textColor="#A8A8A8"
-	            />
-	    </LinearLayout>
-	    
-<!-- 	    <RelativeLayout -->
-<!-- 	        android:id="@+id/volume_slider_container" -->
-<!-- 	        android:layout_width="wrap_content" -->
-<!-- 	        android:layout_height="wrap_content" -->
-<!-- 	        android:layout_marginLeft="200dp" -->
-<!-- 	        android:layout_marginTop="100dp"> -->
+        android:layout_height="0dp"
+        android:layout_weight="0.4" >
 
-<!-- 	        <SeekBar -->
-<!-- 	            android:id="@+id/volume_slider" -->
-<!-- 	            android:layout_width="300dp" -->
-<!-- 	            android:layout_height="wrap_content" -->
-<!-- 	            android:max="100" -->
-<!-- 	            android:progress="30" -->
-<!-- 	            android:secondaryProgress="60"  -->
-<!-- 	            /> -->
-	        
-<!-- 	    </RelativeLayout> -->
-	    
-	    <LinearLayout
-	        android:id="@+id/playlist_panel"
-	        android:tag="playlistPanel"
-	        android:layout_width="300dp"
-	        android:layout_height="match_parent"
-	        android:layout_alignParentRight="true"
-	        android:orientation="horizontal"
-	        android:background="#777777"
-	        android:visibility="invisible"
-	        >
+        <com.videotx.vtxplayerlib.comps.CustomRelativeLayout
+            android:id="@+id/playerViewContainer"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="@color/player_view_container_bg" >
 
-	        <ListView
-	            android:id="@+id/playlist_view"
-	            android:layout_width="match_parent"
-	            android:layout_height="match_parent"
-	            >
-	        </ListView>
-<!-- 	            android:listSelector="@drawable/bg_item_playlist" -->
+            <SurfaceView
+                android:id="@+id/playerView"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_centerInParent="true" />
+        </com.videotx.vtxplayerlib.comps.CustomRelativeLayout>
 
-	    </LinearLayout>
-	    
-	    <LinearLayout 
-            android:id="@+id/menuBar"
-            android:tag="menuBar"
-	        android:orientation="horizontal"
-			android:layout_width="match_parent"
-	    	android:layout_height="30dp"
-	    	android:layout_alignParentTop="true"
-	    	android:layout_alignParentLeft="true"
-	    	android:gravity="right"
-	    	android:paddingLeft="8dp"
-	    	android:paddingRight="8dp"
-	    	android:visibility="invisible"
-	    	android:background="@color/player_controlbar_bg"
-	    	android:alpha="0.7">
+        <ImageView
+            android:id="@+id/snapshot"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:contentDescription="@string/button_desc" />
 
-	        <Button
-	            android:id="@+id/playlist_button"
-            	android:layout_width="wrap_content"
-	            android:layout_height="wrap_content"
-	            android:text="@string/playlist"
-	            android:textSize="12sp"
-	            android:background="#666666"
-	            />
-<!-- 			<View -->
-<!-- 			    android:layout_width="1dp" -->
-<!-- 			    android:layout_height="match_parent" -->
-<!-- 			    android:background="#b8b8b8"> -->
-<!-- 			</View> -->
-<!-- 	        <Button -->
-<!-- 	            android:id="@+id/menu_button" -->
-<!-- 	            android:layout_width="wrap_content" -->
-<!-- 	            android:layout_height="match_parent" -->
-<!-- 	            android:text="@string/menu" -->
-<!-- 	            android:textSize="12sp" -->
-<!-- 	            android:background="#666666" -->
-<!-- 	            /> -->
-	        
+        <RelativeLayout
+            android:id="@+id/slide_seek_hint"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="#E6E6E6"
+            android:padding="5dp"
+            android:tag="slide_seek_hint"
+            android:visibility="invisible" >
+
+            <TextView
+                android:id="@+id/slide_seek_time"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/play_time_default"
+                android:textColor="#A8A8A8"
+                android:textSize="28sp" />
+        </RelativeLayout>
+
+        <LinearLayout
+            android:id="@+id/slide_volume_hint"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="#E6E6E6"
+            android:gravity="center_vertical"
+            android:padding="5dp"
+            android:tag="slide_volume_hint"
+            android:visibility="invisible" >
+
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:contentDescription="@string/button_desc"
+                android:src="@drawable/volume_hint" />
+
+            <TextView
+                android:id="@+id/slide_volume"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/full_percent"
+                android:textColor="#A8A8A8"
+                android:textSize="28sp" />
         </LinearLayout>
-        
-        <LinearLayout 
-            android:id="@+id/controlBar"
-            android:tag="controlBar"
-	        android:orientation="vertical"
-			android:layout_width="match_parent"
-	    	android:layout_height="wrap_content"
-	    	android:layout_alignParentBottom="true"
-	    	android:layout_alignParentLeft="true"
-	    	android:paddingLeft="8dp"
-	    	android:paddingRight="8dp"
-	    	android:background="@color/player_controlbar_bg"
-	    	android:alpha="0.7">
-	        
-	        <SeekBar
-	            android:id="@+id/seekBar"
-	            android:layout_width="match_parent"
-	            android:layout_height="8dp"
-	            android:thumbOffset="6dp"
-	            android:thumb="@drawable/seekbar_thumb"
-	            android:progressDrawable="@drawable/progress_bar_skin"
-	            android:paddingLeft="0dp"
-	            android:paddingRight="0dp"
-	            android:layout_marginTop="5dp"
-	            />
-<!-- 	            android:thumb="@drawable/thumb" -->
-	        <RelativeLayout 
-				android:orientation="horizontal"
-				android:layout_width="match_parent"
-		    	android:layout_height="30dp"
-		    	android:layout_marginTop="5dp"
-		    	android:gravity="center_vertical"
-		    	>
-		        
-		        <com.videotx.vtxplayerlib.comps.PlayPauseButton
-	    		    android:id="@+id/play_pause_button"
-	    		    android:layout_width="wrap_content"
-		            android:layout_height="wrap_content"
-		            android:layout_alignParentLeft="true"
-	    		    >
-	    		</com.videotx.vtxplayerlib.comps.PlayPauseButton>
-		        
-		        <TextView android:id="@+id/time"
-	                android:layout_width="wrap_content"
-	                android:layout_height="wrap_content"
-	                android:gravity="center_vertical"
-	                android:paddingLeft="10dp"
-	                android:layout_toRightOf="@+id/play_pause_button"
-	                android:textColor="@color/play_time"
-	                android:text="@string/play_time_default"
-	                />
-		        
-		        <com.videotx.vtxplayerlib.comps.VolumeButton
-		            android:id="@+id/volume_button"
- 	                android:layout_width="wrap_content"
-	                android:layout_height="wrap_content"
-	                android:layout_toRightOf="@+id/time"
-		            >
-		        </com.videotx.vtxplayerlib.comps.VolumeButton>
-		        
-		        <RelativeLayout 
-	                android:layout_width="wrap_content"
-		            android:layout_height="wrap_content"
-		            android:layout_alignParentRight="true"
-		            >
-			        <ImageButton 
-			            android:id="@+id/fullscreen_button"
-			            android:layout_width="@dimen/play_control_button_size"
-			            android:layout_height="@dimen/play_control_button_size"
-			            android:scaleType="fitXY"
-			            android:padding="0dp"
-			            android:contentDescription="@string/button_desc"
-			            android:src="@drawable/fullscreen_button"
-        				style="?android:attr/borderlessButtonStyle"/>
-			        <ImageButton 
-			            android:id="@+id/fullscreen_exit_button"
-			            android:layout_width="@dimen/play_control_button_size"
-			            android:layout_height="@dimen/play_control_button_size"
-			            android:scaleType="fitXY"
-			            android:padding="0dp"
-			            android:src="@drawable/fullscreen_exit_button"
-			            android:contentDescription="@string/button_desc"
-			            android:visibility="invisible"
-        				style="?android:attr/borderlessButtonStyle"/>
-		        </RelativeLayout>
-			</RelativeLayout>
-    	</LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/slide_brightness_hint"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="#E6E6E6"
+            android:gravity="center_vertical"
+            android:padding="5dp"
+            android:tag="slide_brightness_hint"
+            android:visibility="invisible" >
+
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:contentDescription="@string/button_desc"
+                android:src="@drawable/brightness_hint" />
+
+            <TextView
+                android:id="@+id/slide_brightness"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/full_percent"
+                android:textColor="#A8A8A8"
+                android:textSize="28sp" />
+        </LinearLayout>
+
+        <!-- <RelativeLayout -->
+        <!-- android:id="@+id/volume_slider_container" -->
+        <!-- android:layout_width="wrap_content" -->
+        <!-- android:layout_height="wrap_content" -->
+        <!-- android:layout_marginLeft="200dp" -->
+        <!-- android:layout_marginTop="100dp"> -->
+
+
+        <!-- <SeekBar -->
+        <!-- android:id="@+id/volume_slider" -->
+        <!-- android:layout_width="300dp" -->
+        <!-- android:layout_height="wrap_content" -->
+        <!-- android:max="100" -->
+        <!-- android:progress="30" -->
+        <!-- android:secondaryProgress="60" -->
+        <!-- /> -->
+
+
+        <!-- </RelativeLayout> -->
+
+        <LinearLayout
+            android:id="@+id/floatPanel"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical"
+            android:gravity="right">
+
+            <LinearLayout
+                android:id="@+id/playlist_panel"
+                android:layout_width="300dp"
+                android:layout_height="match_parent"
+                android:background="#777777"
+                android:orientation="horizontal"
+                android:tag="playlistPanel"
+                android:visibility="invisible" >
+
+                <ListView
+                    android:id="@+id/playlist_view"
+                    android:layout_width="300dp"
+                    android:layout_height="match_parent" >
+                </ListView>
+                <!-- android:listSelector="@drawable/bg_item_playlist" -->
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/menuBar"
+                android:layout_width="match_parent"
+                android:layout_height="30dp"
+                android:alpha="0.7"
+                android:background="@color/player_controlbar_bg"
+                android:gravity="right"
+                android:orientation="horizontal"
+                android:paddingLeft="8dp"
+                android:paddingRight="8dp"
+                android:tag="menuBar"
+                android:visibility="invisible" >
+
+                <Button
+                    android:id="@+id/playlist_button"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:background="#666666"
+                    android:text="@string/playlist"
+                    android:textSize="12sp" />
+            </LinearLayout>
+
+            <!-- controlBar -->
+            <LinearLayout
+                android:id="@+id/controlBar"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:alpha="0.7"
+                android:background="@color/player_controlbar_bg"
+                android:orientation="vertical"
+                android:paddingLeft="8dp"
+                android:paddingRight="8dp"
+                android:tag="controlBar" >
+
+                <SeekBar
+                    android:id="@+id/seekBar"
+                    android:layout_width="match_parent"
+                    android:layout_height="8dp"
+                    android:layout_marginTop="5dp"
+                    android:paddingLeft="0dp"
+                    android:paddingRight="0dp"
+                    android:progressDrawable="@drawable/progress_bar_skin"
+                    android:thumb="@drawable/seekbar_thumb"
+                    android:thumbOffset="6dp" />
+                <!-- android:thumb="@drawable/thumb" -->
+
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="30dp"
+                    android:layout_marginTop="5dp"
+                    android:gravity="center_vertical"
+                    android:orientation="horizontal" >
+
+                    <com.videotx.vtxplayerlib.comps.PlayPauseButton
+                        android:id="@+id/play_pause_button"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentLeft="true" >
+                    </com.videotx.vtxplayerlib.comps.PlayPauseButton>
+
+                    <TextView
+                        android:id="@+id/time"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_toRightOf="@+id/play_pause_button"
+                        android:gravity="center_vertical"
+                        android:paddingLeft="10dp"
+                        android:text="@string/play_time_default"
+                        android:textColor="@color/play_time" />
+
+                    <com.videotx.vtxplayerlib.comps.VolumeButton
+                        android:id="@+id/volume_button"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_toRightOf="@+id/time" >
+                    </com.videotx.vtxplayerlib.comps.VolumeButton>
+
+                    <RelativeLayout
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentRight="true" >
+
+                        <ImageButton
+                            android:id="@+id/fullscreen_button"
+                            style="?android:attr/borderlessButtonStyle"
+                            android:layout_width="@dimen/play_control_button_size"
+                            android:layout_height="@dimen/play_control_button_size"
+                            android:contentDescription="@string/button_desc"
+                            android:padding="0dp"
+                            android:scaleType="fitXY"
+                            android:src="@drawable/fullscreen_button" />
+
+                        <ImageButton
+                            android:id="@+id/fullscreen_exit_button"
+                            style="?android:attr/borderlessButtonStyle"
+                            android:layout_width="@dimen/play_control_button_size"
+                            android:layout_height="@dimen/play_control_button_size"
+                            android:contentDescription="@string/button_desc"
+                            android:padding="0dp"
+                            android:scaleType="fitXY"
+                            android:src="@drawable/fullscreen_exit_button"
+                            android:visibility="invisible" />
+                    </RelativeLayout>
+                </RelativeLayout><!-- second row, buttons -->
+            </LinearLayout><!-- controlBar -->
+        </LinearLayout><!-- floatPanel -->
     </RelativeLayout>
-    
-    <LinearLayout android:id="@+id/gap"
-        android:orientation="horizontal"
+
+    <LinearLayout
+        android:id="@+id/gap"
         android:layout_width="match_parent"
-        android:layout_height="10dp">
-        
+        android:layout_height="10dp"
+        android:orientation="horizontal" >
     </LinearLayout>
-    
-    <LinearLayout 
+
+    <LinearLayout
         android:id="@+id/video_info"
-        android:orientation="vertical"
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_weight="0.6"
-        >
-        
+        android:orientation="vertical" >
+
         <TextView
-	        android:id="@+id/video_title"
-	        android:layout_width="wrap_content"
-	        android:layout_height="wrap_content"
-	        android:text="@string/view_video_title" 
-	        />
-        
-        <TextView android:id="@+id/video_desc"
+            android:id="@+id/video_title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/view_video_title" />
+
+        <TextView
+            android:id="@+id/video_desc"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"/>
+            android:layout_height="match_parent" />
     </LinearLayout>
 
 </LinearLayout>
