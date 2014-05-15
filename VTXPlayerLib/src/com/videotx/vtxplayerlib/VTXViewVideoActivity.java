@@ -112,7 +112,7 @@ public class VTXViewVideoActivity extends Activity
 	private Button playlistButton;
 //	private Button menuButton;
 	
-	private RelativeLayout playlistPanel;
+	private LinearLayout playlistPanel;
 	private ListView playlistView;
 	private PlaylistArrayAdaptor playlistAdaptor;
 	
@@ -198,7 +198,7 @@ public class VTXViewVideoActivity extends Activity
 		playlistButton.setOnClickListener(onPlaylistButtonClick);
 //		menuButton = (Button) findViewById(R.id.menu_button);
 		
-		playlistPanel = (RelativeLayout) findViewById(R.id.playlist_panel);
+		playlistPanel = (LinearLayout) findViewById(R.id.playlist_panel);
 		playlistView = (ListView) findViewById(R.id.playlist_view);
 	}
 	
