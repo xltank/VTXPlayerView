@@ -1,21 +1,19 @@
 package com.videotx.testvideolib;
 
-import com.videotx.vtxplayerlib.VTXViewVideoActivity;
-import com.videotx.vtxplayerlib.VTXViewVideoActivityOriginal;
-import com.videotx.vtxplayerlib.constants.MessageConstant;
-import com.videotx.vtxplayerlib.utils.GlobalData;
-
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v7.app.ActionBarActivity;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+
+import com.videotx.vtxplayerlib.VTXViewVideoActivity;
+import com.videotx.vtxplayerlib.VTXViewVideoActivityOriginal;
+import com.videotx.vtxplayerlib.constants.MessageConstant;
 
 public class MainActivity extends ActionBarActivity {
 

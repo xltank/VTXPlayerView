@@ -41,7 +41,11 @@ public class PlaylistArrayAdaptor extends ArrayAdapter<VideoInfo>
 		if(video.renditions.size() > 0)
 			durationText.setText(CommonUtil.formatDuration(video.renditions.get(0).duration));
 		
-		
+		//!!! this is a workaround. why listSelector does not work in this listview ???
+		if(video.selected == true)//(convertView.isSelected())
+			convertView.setBackgroundResource(R.color.playlist_item_bg_highlight);
+		else
+			convertView.setBackgroundResource(R.color.playlist_item_bg);
 		
 		return convertView;
 	}

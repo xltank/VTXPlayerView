@@ -3,4 +3,8 @@
     <color name="player_controlbar_bg">#666666</color>
     <color name="play_time">#E9E9E9</color>
     <color name="player_view_container_bg">#666666</color>
+    
+    <color name="playlist_item_bg_pressed">#009f00</color>
+    <color name="playlist_item_bg_highlight">#00CF00</color>
+    <color name="playlist_item_bg">#efefef</color>
 </resources>

@@ -31,6 +31,7 @@ public class VideoInfo implements Parcelable {
 	public List<CuePoint> cuepoints = new ArrayList<CuePoint>();
 	public List<Rendition> renditions = new ArrayList<Rendition>();
 	
+	public Boolean selected = false; // workaround to highlight selected item.
 	
 	////// !!! not tested and used.
 	

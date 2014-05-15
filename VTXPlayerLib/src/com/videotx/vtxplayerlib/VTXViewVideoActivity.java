@@ -21,7 +21,6 @@ import android.content.pm.ActivityInfo;
 import android.content.res.Configuration;
 import android.graphics.Point;
 import android.media.AudioManager;
-import android.media.MediaPlayer;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
@@ -37,8 +36,9 @@ import android.view.View.OnClickListener;
 import android.view.View.OnTouchListener;
 import android.view.WindowManager;
 import android.view.WindowManager.LayoutParams;
-import android.widget.AdapterView.OnItemClickListener;
 import android.widget.AdapterView;
+import android.widget.AdapterView.OnItemClickListener;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.ImageView;
@@ -51,8 +51,8 @@ import android.widget.TextView;
 
 import com.videotx.vtxplayerlib.comps.CustomRelativeLayout;
 import com.videotx.vtxplayerlib.comps.PlayPauseButton;
-import com.videotx.vtxplayerlib.comps.PlaylistArrayAdaptor;
 import com.videotx.vtxplayerlib.comps.PlayPauseButton.OnPlayButtonStateChangeListener;
+import com.videotx.vtxplayerlib.comps.PlaylistArrayAdaptor;
 import com.videotx.vtxplayerlib.comps.VolumeButton;
 import com.videotx.vtxplayerlib.constants.APIConstant;
 import com.videotx.vtxplayerlib.constants.MessageConstant;
@@ -114,6 +114,7 @@ public class VTXViewVideoActivity extends Activity
 	
 	private LinearLayout playlistPanel;
 	private ListView playlistView;
+	private PlaylistArrayAdaptor playlistAdaptor;
 	
 	private Boolean isFullscreenState = false;
 	
@@ -304,7 +305,8 @@ public class VTXViewVideoActivity extends Activity
 	};
 	private void preparePlaylist()
 	{
-		playlistView.setAdapter(new PlaylistArrayAdaptor(this, R.id.playlist_view, curPlaylistInfo.videos));
+		playlistAdaptor = new PlaylistArrayAdaptor(this, R.layout.item_playlist, curPlaylistInfo.videos);
+		playlistView.setAdapter(playlistAdaptor);
 		playlistView.setOnItemClickListener(onPlaylistItemClick);
 		
 		gotoPlaylistIndex(0);
@@ -312,12 +314,22 @@ public class VTXViewVideoActivity extends Activity
 	
 	private void gotoPlaylistIndex(int index)
 	{
-		// TODO: highlight selected video item.
-		playlistView.setItemChecked(0, true);
-//		playlistView.setSelection(0);
+//		playlistView.setSelection(index);
+//		playlistView.setItemChecked(index, true);
+//		View itemView = playlistView.getSelectedView();
+		Log.w(GlobalData.DEBUG_TAG, ""+playlistView.getSelectedItem()+", "+playlistView.getSelectedItemId()+", "+playlistView.getSelectedItemPosition()+", "+playlistView.getSelectedView());
+		Log.w(GlobalData.DEBUG_TAG, ""+playlistView.getCheckedItemCount()+", "+playlistView.getCheckedItemPosition()+", "+playlistView.getCheckedItemPositions()+", "+playlistView.getCheckedItemIds());
+		
 //		playlistView.smoothScrollToPosition(0);
 		curVideoInfo = (VideoInfo) curPlaylistInfo.videos.get(index);
 		prepareVideoInfo();
+		
+		for(int i=0; i<curPlaylistInfo.videos.size(); i++) 
+		{
+			curPlaylistInfo.videos.get(i).selected = false;
+		}
+		curPlaylistInfo.videos.get(index).selected = true;
+		playlistAdaptor.notifyDataSetChanged();
 	}
 	
 	final OnItemClickListener onPlaylistItemClick = new OnItemClickListener() 
@@ -327,6 +339,8 @@ public class VTXViewVideoActivity extends Activity
 			if(position == playlistView.getSelectedItemPosition())
 				return ;
 			
+//			view.setSelected(true);
+//			view.setBackgroundResource(R.color.highlight_bg_item_playlist);
     		gotoPlaylistIndex(position);
     		// TODO: highlight selected item
     	}
@@ -742,7 +756,7 @@ public class VTXViewVideoActivity extends Activity
 		        		int curBrightness = 0;
 						try {
 							curBrightness = System.getInt(getContentResolver(), System.SCREEN_BRIGHTNESS);
-							LayoutParams lp = getWindow().getAttributes();
+//							LayoutParams lp = getWindow().getAttributes();
 //							Log.w(GlobalData.DEBUG_TAG, "curBrightness " + curBrightness + ", " + lp.screenBrightness);
 						}
 						catch (SettingNotFoundException e) {

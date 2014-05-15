@@ -126,7 +126,7 @@
 	        android:layout_height="match_parent"
 	        android:layout_alignParentRight="true"
 	        android:orientation="horizontal"
-	        android:background="#66FF0000"
+	        android:background="#777777"
 	        android:visibility="invisible"
 	        >
 
@@ -134,9 +134,9 @@
 	            android:id="@+id/playlist_view"
 	            android:layout_width="match_parent"
 	            android:layout_height="match_parent"
-	            android:choiceMode="singleChoice"
 	            >
 	        </ListView>
+<!-- 	            android:listSelector="@drawable/bg_item_playlist" -->
 
 	    </LinearLayout>
 	    

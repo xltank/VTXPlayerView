@@ -9,6 +9,8 @@
     android:paddingTop="2dp"
     android:paddingBottom="2dp"
     >
+<!--     android:background="@drawable/bg_item_playlist" -->
+    <!-- why this background does not work ??? -->
 
     <ImageView
         android:id="@+id/image_item_playlist"
@@ -16,7 +18,8 @@
         android:layout_height="@dimen/playlist_item_image_height"
         android:layout_marginLeft="5dp"
         android:contentDescription="image description"
-        android:src="@android:drawable/ic_menu_gallery" />
+        android:src="@android:drawable/ic_menu_gallery"
+        android:visibility="invisible" />
 
     <TextView 
         android:id="@+id/title_item_playlist"
