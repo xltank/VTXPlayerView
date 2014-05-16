@@ -82,13 +82,11 @@ public class VTXViewVideoActivity extends Activity
 	private IjkMediaPlayer player;
 	private AudioManager audioManager;
 	
-//	private VideoInfo videoInfo;
 	private String videoUrl;
 	
 	private Timer tikerTimer;
 
 	private CustomRelativeLayout playerViewContainer;
-	private LinearLayout floatPanel;
 	
 	private LinearLayout controlBar;
 	private ImageView snapshot;
@@ -109,7 +107,7 @@ public class VTXViewVideoActivity extends Activity
 	private TextView videoTitle;
 	private TextView videoDesc;
 	
-	private LinearLayout menubar;
+	private LinearLayout menuBar;
 	private Button playlistButton;
 //	private Button menuButton;
 	
@@ -117,7 +115,7 @@ public class VTXViewVideoActivity extends Activity
 	private ListView playlistView;
 	private PlaylistArrayAdaptor playlistAdaptor;
 	
-//	private Boolean isFullscreenState = false;
+	private Boolean isFullscreenState = false;
 	
 	private int bufferPercent;
 	private long duration;
@@ -171,6 +169,7 @@ public class VTXViewVideoActivity extends Activity
 		slideBrightness = (TextView) findViewById(R.id.slide_brightness);
 		
 		controlBar = (LinearLayout) findViewById(R.id.controlBar);
+		controlBar.setOnTouchListener(onControlBarTouch);
 		
 		timeLabel = (TextView) findViewById(R.id.time);
 		
@@ -192,8 +191,8 @@ public class VTXViewVideoActivity extends Activity
 		videoTitle = (TextView) findViewById(R.id.video_title);
 		videoDesc = (TextView) findViewById(R.id.video_desc);
 		
-		menubar = (LinearLayout) findViewById(R.id.menuBar);
-//		menubar.setOnClickListener(onMenubarClick);
+		menuBar = (LinearLayout) findViewById(R.id.menuBar);
+		menuBar.setOnTouchListener(onMenuBarTouch);
 		
 		playlistButton = (Button) findViewById(R.id.playlist_button);
 		playlistButton.setOnClickListener(onPlaylistButtonClick);
@@ -202,8 +201,6 @@ public class VTXViewVideoActivity extends Activity
 		playlistPanel = (LinearLayout) findViewById(R.id.playlist_panel);
 		playlistView = (ListView) findViewById(R.id.playlist_view);
 		
-		floatPanel = (LinearLayout)	findViewById(R.id.floatPanel);
-		floatPanel.setOnTouchListener(onFloatPanelTouch);
 	}
 	
 	
@@ -259,9 +256,9 @@ public class VTXViewVideoActivity extends Activity
 		if(player == null)
 		{
 			initPlayer();
-			autoHide(floatPanel, AUTO_HIDE_DELAY_MILLIS, true);
-//			if(isFullscreenState == true)
-//				autoHide(menubar, AUTO_HIDE_DELAY_MILLIS);
+			autoHide(controlBar, AUTO_HIDE_DELAY_MILLIS, true);
+			if(isFullscreenState == true)
+				autoHide(menuBar, AUTO_HIDE_DELAY_MILLIS, true);
 //			playlistPanel.setVisibility(View.INVISIBLE);
 		}
 		
@@ -342,6 +339,9 @@ public class VTXViewVideoActivity extends Activity
 				return ;
 			
     		gotoPlaylistIndex(position);
+    		autoHide(playlistPanel, AUTO_HIDE_DELAY_MILLIS, false);
+    		autoHide(controlBar, AUTO_HIDE_DELAY_MILLIS, false);
+			autoHide(menuBar, AUTO_HIDE_DELAY_MILLIS, false);
     	}
 	};
 	
@@ -631,7 +631,7 @@ public class VTXViewVideoActivity extends Activity
 	
 	private void toFullScreen()
 	{
-//		isFullscreenState = true;
+		isFullscreenState = true;
 		player.pause();
 		
 		setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE);
@@ -644,7 +644,7 @@ public class VTXViewVideoActivity extends Activity
 		attrs.flags |= WindowManager.LayoutParams.FLAG_FULLSCREEN;
 		getWindow().setAttributes(attrs);
 		
-		menubar.setVisibility(View.VISIBLE);
+		menuBar.setVisibility(View.VISIBLE);
 
 		layoutVideo();
 		player.start();
@@ -661,7 +661,7 @@ public class VTXViewVideoActivity extends Activity
 	
 	private void exitFullScreen()
 	{
-//		isFullscreenState = false;
+		isFullscreenState = false;
 		player.pause();
 		
 		setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
@@ -676,7 +676,7 @@ public class VTXViewVideoActivity extends Activity
 		
 		layoutVideo();
 		
-		menubar.setVisibility(View.INVISIBLE);
+		menuBar.setVisibility(View.INVISIBLE);
 		playlistPanel.setVisibility(View.INVISIBLE);
 		
 		player.start();
@@ -825,75 +825,63 @@ public class VTXViewVideoActivity extends Activity
 		public void onClick(View v) 
 		{
 			Log.w(GlobalData.DEBUG_TAG, "On PlayerView Click");
-			playlistPanel.setVisibility(View.INVISIBLE);
-			autoHide(floatPanel, AUTO_HIDE_DELAY_MILLIS, true);
+			if(controlBar.getVisibility() == View.VISIBLE
+				|| menuBar.getVisibility() == View.VISIBLE
+				|| playlistPanel.getVisibility() == View.VISIBLE)
+			{
+				controlBar.setVisibility(View.INVISIBLE);
+				menuBar.setVisibility(View.INVISIBLE);
+				playlistPanel.setVisibility(View.INVISIBLE);
+			}
+			else
+			{
+				autoHide(controlBar, AUTO_HIDE_DELAY_MILLIS, true);
+				if(isFullscreenState == true)
+					autoHide(menuBar, AUTO_HIDE_DELAY_MILLIS, true);
+			}
+			
 		}
 	};
 	
 	
-	private HashMap<View, Runnable> autoHideHash = new HashMap<View, Runnable>();
-	private Handler mHideHandler = new Handler();
-	private void autoHide(View v, int duration, Boolean hideIfVisible)
-	{
-		Log.w(GlobalData.DEBUG_TAG, "autohide : " + v.getTag());
-		final View view = v;
-		Runnable mHideRunnable = new Runnable() {
-			@Override
-			public void run() {
-				Log.w(GlobalData.DEBUG_TAG, "hid : " + view.getTag());
-				view.setVisibility(View.INVISIBLE);
-			}
-		};
-		
-		Runnable lastRunnable = autoHideHash.get(v);
-		if(lastRunnable != null)
-		{
-			Log.w(GlobalData.DEBUG_TAG, "autohide : exists " + v.getTag());
-			autoHideHash.remove(v);
-			mHideHandler.removeCallbacks(lastRunnable);
-		}
-		if(hideIfVisible == true && v.getVisibility() == View.VISIBLE)
-		{
-			v.setVisibility(View.INVISIBLE);
-		}
-		
-		autoHideHash.put(v, mHideRunnable);
-		mHideHandler.postDelayed(mHideRunnable, duration);
-		view.setVisibility(View.VISIBLE);
-	}
-	
-	
-//	private View.OnClickListener onMenubarClick = new OnClickListener() 
-//	{
-//		@Override
-//		public void onClick(View v) {
-//			Log.w(GlobalData.DEBUG_TAG, "playlistPanel Clicked.");
-//		}
-//	};
-	
-	private View.OnTouchListener onFloatPanelTouch = new OnTouchListener() 
+	private View.OnTouchListener onMenuBarTouch = new OnTouchListener() 
 	{
 		@Override
 		public boolean onTouch(View v, MotionEvent event) 
-		{ 
-			Log.w(GlobalData.DEBUG_TAG, "floatPanel Touch: " + v.getTag());
-			autoHide(floatPanel, AUTO_HIDE_DELAY_MILLIS, false);
-			return false;
+		{
+			Log.w(GlobalData.DEBUG_TAG, "onMenubarTouch Touch.");
+			autoHide(controlBar, AUTO_HIDE_DELAY_MILLIS, false);
+			autoHide(menuBar, AUTO_HIDE_DELAY_MILLIS, false);
+			return true;
 		}
 	};
+	
+	
+	private View.OnTouchListener onControlBarTouch = new OnTouchListener() 
+	{
+		@Override
+		public boolean onTouch(View v, MotionEvent event) 
+		{
+			Log.w(GlobalData.DEBUG_TAG, "onControlBarTouch Touch.");
+			autoHide(controlBar, AUTO_HIDE_DELAY_MILLIS, false);
+			autoHide(menuBar, AUTO_HIDE_DELAY_MILLIS, false);
+			return true;
+		}
+	};
+	
 	
 	private View.OnClickListener onPlaylistButtonClick = new OnClickListener() 
 	{
 		@Override
 		public void onClick(View v) {
-//			Log.w(GlobalData.DEBUG_TAG, "On onPlaylistButton Click");
-			if(playlistPanel.getVisibility() == View.VISIBLE)
-				playlistPanel.setVisibility(View.INVISIBLE);
-			else
-				playlistPanel.setVisibility(View.VISIBLE);
-			
-			// this can not trigger touch event in float panel.
-			autoHide(floatPanel, AUTO_HIDE_DELAY_MILLIS, false);
+			Log.w(GlobalData.DEBUG_TAG, "On onPlaylistButton Click");
+//			if(playlistPanel.getVisibility() == View.VISIBLE)
+//				playlistPanel.setVisibility(View.INVISIBLE);
+//			else
+//				playlistPanel.setVisibility(View.VISIBLE);
+			autoHide(playlistPanel, AUTO_HIDE_DELAY_MILLIS, true);
+			autoHide(controlBar, AUTO_HIDE_DELAY_MILLIS, false);
+			autoHide(menuBar, AUTO_HIDE_DELAY_MILLIS, false);
 		}
 	};
 	
@@ -1001,5 +989,39 @@ public class VTXViewVideoActivity extends Activity
 		Log.w(GlobalData.DEBUG_TAG, "ViewVideoActivity  onRestart");
 	}
 	
+	
+	
+	// utils
+	
+	private HashMap<View, Runnable> autoHideHash = new HashMap<View, Runnable>();
+	private Handler mHideHandler = new Handler();
+	private void autoHide(View v, int duration, Boolean hideIfVisible)
+	{
+		Log.w(GlobalData.DEBUG_TAG, "autohide : " + v.getTag());
+		final View view = v;
+		Runnable mHideRunnable = new Runnable() {
+			@Override
+			public void run() {
+				Log.w(GlobalData.DEBUG_TAG, "hid : " + view.getTag());
+				view.setVisibility(View.INVISIBLE);
+			}
+		};
+		
+		Runnable lastRunnable = autoHideHash.get(v);
+		if(lastRunnable != null)
+		{
+			Log.w(GlobalData.DEBUG_TAG, "autohide : exists " + v.getTag());
+			autoHideHash.remove(v);
+			mHideHandler.removeCallbacks(lastRunnable);
+		}
+		if(hideIfVisible == true && v.getVisibility() == View.VISIBLE)
+		{
+			v.setVisibility(View.INVISIBLE);
+		}
+		
+		autoHideHash.put(v, mHideRunnable);
+		mHideHandler.postDelayed(mHideRunnable, duration);
+		view.setVisibility(View.VISIBLE);
+	}
 
 }
