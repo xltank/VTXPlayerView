@@ -317,8 +317,8 @@ public class VTXViewVideoActivity extends Activity
 //		playlistView.setSelection(index);
 //		playlistView.setItemChecked(index, true);
 //		View itemView = playlistView.getSelectedView();
-		Log.w(GlobalData.DEBUG_TAG, ""+playlistView.getSelectedItem()+", "+playlistView.getSelectedItemId()+", "+playlistView.getSelectedItemPosition()+", "+playlistView.getSelectedView());
-		Log.w(GlobalData.DEBUG_TAG, ""+playlistView.getCheckedItemCount()+", "+playlistView.getCheckedItemPosition()+", "+playlistView.getCheckedItemPositions()+", "+playlistView.getCheckedItemIds());
+//		Log.w(GlobalData.DEBUG_TAG, ""+playlistView.getSelectedItem()+", "+playlistView.getSelectedItemId()+", "+playlistView.getSelectedItemPosition()+", "+playlistView.getSelectedView());
+//		Log.w(GlobalData.DEBUG_TAG, ""+playlistView.getCheckedItemCount()+", "+playlistView.getCheckedItemPosition()+", "+playlistView.getCheckedItemPositions()+", "+playlistView.getCheckedItemIds());
 		
 //		playlistView.smoothScrollToPosition(0);
 		curVideoInfo = (VideoInfo) curPlaylistInfo.videos.get(index);
@@ -709,13 +709,13 @@ public class VTXViewVideoActivity extends Activity
 			float curY = event.getY();
 			switch(action) {
 		        case (MotionEvent.ACTION_DOWN) :
-					Log.w(GlobalData.DEBUG_TAG, "On Touch ACTION_DOWN");
+//					Log.w(GlobalData.DEBUG_TAG, "On Touch ACTION_DOWN");
 	        		area = event.getX()*2 < playerViewContainer.getWidth() ? 1 : 2;
 		        	lastX = curX;
 		        	lastY = curY;
 		            return false;
 		        case (MotionEvent.ACTION_MOVE) :
-		        	Log.w(GlobalData.DEBUG_TAG, "On Touch ACTION_MOVE");
+//		        	Log.w(GlobalData.DEBUG_TAG, "On Touch ACTION_MOVE");
 		        	// getHistoricalX()/getHistoricalY() is not perfect, for sometime getHistorySize() == 0.
 		        	float xValue = curX - lastX;
 		        	float yValue = curY - lastY;
@@ -788,7 +788,7 @@ public class VTXViewVideoActivity extends Activity
 		        	lastY = curY;
 		            return true;
 		        case (MotionEvent.ACTION_UP) :
-		        	Log.w(GlobalData.DEBUG_TAG, "On Touch ACTION_UP");
+//		        	Log.w(GlobalData.DEBUG_TAG, "On Touch ACTION_UP");
 		        	firstDelta = 0;
 		        	if(direction == LEFT || direction == RIGHT)
 		        		player.seekTo((int)(player.getCurrentPosition() + timeDelta));
@@ -803,7 +803,7 @@ public class VTXViewVideoActivity extends Activity
 		        	brightnessDelta = 0;
 		            return false;
 		        case (MotionEvent.ACTION_OUTSIDE) :
-		        	Log.w(GlobalData.DEBUG_TAG, "On Touch ACTION_OUTSIDE");
+//		        	Log.w(GlobalData.DEBUG_TAG, "On Touch ACTION_OUTSIDE");
 		        	firstDelta = 0;
 		        	direction = 0;
 		        	timeDelta = 0;
@@ -822,7 +822,7 @@ public class VTXViewVideoActivity extends Activity
 		@Override
 		public void onClick(View v) 
 		{
-			Log.w(GlobalData.DEBUG_TAG, "On PlayerView Click");
+//			Log.w(GlobalData.DEBUG_TAG, "On PlayerView Click");
 //			if(controlBar.getVisibility() == View.VISIBLE)
 //				controlBar.setVisibility(View.INVISIBLE);
 //			else
@@ -884,7 +884,7 @@ public class VTXViewVideoActivity extends Activity
 	{
 		@Override
 		public void onClick(View v) {
-			Log.w(GlobalData.DEBUG_TAG, "On onPlaylistButton Click");
+//			Log.w(GlobalData.DEBUG_TAG, "On onPlaylistButton Click");
 //			autoHide(playlistPanel, 3000);
 			if(playlistPanel.getVisibility() == View.VISIBLE)
 				playlistPanel.setVisibility(View.INVISIBLE);

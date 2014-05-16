@@ -126,24 +126,6 @@
             android:gravity="right">
 
             <LinearLayout
-                android:id="@+id/playlist_panel"
-                android:layout_width="300dp"
-                android:layout_height="match_parent"
-                android:background="#777777"
-                android:orientation="horizontal"
-                android:tag="playlistPanel"
-                android:visibility="invisible" >
-
-                <ListView
-                    android:id="@+id/playlist_view"
-                    android:layout_width="300dp"
-                    android:layout_height="match_parent" >
-                </ListView>
-                <!-- android:listSelector="@drawable/bg_item_playlist" -->
-
-            </LinearLayout>
-
-            <LinearLayout
                 android:id="@+id/menuBar"
                 android:layout_width="match_parent"
                 android:layout_height="30dp"
@@ -165,6 +147,26 @@
                     android:textSize="12sp" />
             </LinearLayout>
 
+            <LinearLayout
+                android:id="@+id/playlist_panel"
+                android:layout_width="300dp"
+                android:layout_height="0dp"
+                android:layout_weight="1"
+                android:background="#777777"
+                android:orientation="horizontal"
+                android:tag="playlistPanel"
+                android:visibility="invisible"
+                >
+
+                <ListView
+                    android:id="@+id/playlist_view"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent" >
+                </ListView>
+                <!-- android:listSelector="@drawable/bg_item_playlist" -->
+
+            </LinearLayout>
+            
             <!-- controlBar -->
             <LinearLayout
                 android:id="@+id/controlBar"
