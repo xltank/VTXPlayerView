@@ -212,8 +212,8 @@ public class VTXViewVideoActivity extends Activity
 				videoId, 
 				publisherId, 
 				APIConstant.RESULT_FORMAT_JSON, 
-//				APIConstant.VIDEO_TYPE_M3U8
-				APIConstant.VIDEO_TYPE_MP4
+				APIConstant.VIDEO_TYPE_M3U8
+//				APIConstant.VIDEO_TYPE_MP4
 				);
 	}
 	final Handler onVideoInfoHandler = new Handler()
@@ -286,7 +286,9 @@ public class VTXViewVideoActivity extends Activity
 				playlistId, 
 				publisherId, 
 				APIConstant.RESULT_FORMAT_JSON, 
-				APIConstant.VIDEO_TYPE_MP4);
+				APIConstant.VIDEO_TYPE_M3U8
+//				APIConstant.VIDEO_TYPE_MP4
+				);
 	}
 	final Handler onPlaylistInfoHandler = new Handler()
 	{
@@ -318,6 +320,7 @@ public class VTXViewVideoActivity extends Activity
 //		Log.w(GlobalData.DEBUG_TAG, ""+playlistView.getSelectedItem()+", "+playlistView.getSelectedItemId()+", "+playlistView.getSelectedItemPosition()+", "+playlistView.getSelectedView());
 //		Log.w(GlobalData.DEBUG_TAG, ""+playlistView.getCheckedItemCount()+", "+playlistView.getCheckedItemPosition()+", "+playlistView.getCheckedItemPositions()+", "+playlistView.getCheckedItemIds());
 		
+		playlistIndex = index;
 //		playlistView.smoothScrollToPosition(index);
 		curVideoInfo = (VideoInfo) curPlaylistInfo.videos.get(index);
 		prepareVideoInfo();
@@ -454,9 +457,6 @@ public class VTXViewVideoActivity extends Activity
 			if(playlistIndex < curPlaylistInfo.videos.size()-1)
 			{
 				gotoPlaylistIndex(playlistIndex+1);
-			}else
-			{
-				// TODO: do sth ???
 			}
 		
 		//TODO: loop when it's video, but not playlist.
