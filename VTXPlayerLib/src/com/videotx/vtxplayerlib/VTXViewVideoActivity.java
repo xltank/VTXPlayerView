@@ -29,6 +29,7 @@ import android.provider.Settings.System;
 import android.util.Log;
 import android.view.MotionEvent;
 import android.view.SurfaceHolder;
+import android.view.Window;
 import android.view.SurfaceHolder.Callback;
 import android.view.SurfaceView;
 import android.view.View;
@@ -131,6 +132,7 @@ public class VTXViewVideoActivity extends Activity
 		super.onCreate(savedInstanceState);
 		
 		getWindow().setFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON, WindowManager.LayoutParams.FLAG_HARDWARE_ACCELERATED);
+		requestWindowFeature(Window.FEATURE_NO_TITLE);
 		setContentView(R.layout.activity_view_video);
 		setVolumeControlStream(AudioManager.STREAM_MUSIC);
 //		setupActionBar();
