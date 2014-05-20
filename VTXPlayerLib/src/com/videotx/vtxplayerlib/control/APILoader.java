@@ -11,6 +11,7 @@ import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
+import android.util.Log;
 
 import com.videotx.vtxplayerlib.utils.GlobalData;
 
@@ -55,6 +56,7 @@ public class APILoader extends AsyncTask<String, Integer, String> {
 		
 		try {
 			_url += "?" + _params;
+			Log.w(GlobalData.DEBUG_TAG, "GET, " + _url);
 			URL url = new URL(_url);
 		    conn = (HttpURLConnection) url.openConnection();
 		    conn.setRequestMethod(_method);
@@ -109,7 +111,7 @@ public class APILoader extends AsyncTask<String, Integer, String> {
 	    	
 	    	conn.connect();
 		    
-		    System.out.println(_params.toString());
+	    	Log.w(GlobalData.DEBUG_TAG, "POST, " + _params.toString());
 		    DataOutputStream out = new DataOutputStream(conn.getOutputStream());
 		    out.writeBytes(_params);
 		    out.flush();

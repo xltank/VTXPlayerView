@@ -4,7 +4,7 @@
     android:versionName="1.0" >
 
     <uses-sdk
-        android:minSdkVersion="11"
+        android:minSdkVersion="10"
         android:targetSdkVersion="19" />
 
     <application
@@ -15,7 +15,8 @@
         
         <activity
             android:name="com.videotx.vtxplayerlib.VTXViewVideoActivity"
-            android:label="VTX ViewVideo Activity" >
+            android:label="VTX ViewVideo Activity" 
+            >
             <intent-filter>
                 <action android:name="android.intent.action.VIEW" />
                 <category android:name="android.intent.category.DEFAULT" />

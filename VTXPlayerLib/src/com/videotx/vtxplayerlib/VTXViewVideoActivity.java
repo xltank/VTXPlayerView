@@ -131,10 +131,12 @@ public class VTXViewVideoActivity extends Activity
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		
-		getWindow().setFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON, WindowManager.LayoutParams.FLAG_HARDWARE_ACCELERATED);
-		requestWindowFeature(Window.FEATURE_NO_TITLE);
+		getWindow().setFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON, 
+							 WindowManager.LayoutParams.FLAG_HARDWARE_ACCELERATED); // ###not in comp
+		requestWindowFeature(Window.FEATURE_NO_TITLE); // ###not in comp
 		setContentView(R.layout.activity_view_video);
-		setVolumeControlStream(AudioManager.STREAM_MUSIC);
+		//Suggests an audio stream whose volume should be changed by the hardware volume controls. 
+		setVolumeControlStream(AudioManager.STREAM_MUSIC); // ###not in comp
 //		setupActionBar();
 		
 		Intent intent = getIntent();

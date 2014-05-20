@@ -157,6 +157,10 @@
 	    	android:background="@color/player_controlbar_bg"
 	    	android:alpha="0.7">
 
+	        <TextView android:id="@+id/title"
+	            android:layout_width="wrap_content"
+	            android:layout_height="match_parent"/>
+	        
 	        <Button
 	            android:id="@+id/playlist_button"
             	android:layout_width="wrap_content"
@@ -240,7 +244,8 @@
 			            android:padding="0dp"
 			            android:contentDescription="@string/button_desc"
 			            android:src="@drawable/fullscreen_button"
-        				style="?android:attr/borderlessButtonStyle"/>
+			            />
+<!-- 			        style="?android:attr/borderlessButtonStyle" -->
 			        <ImageButton 
 			            android:id="@+id/fullscreen_exit_button"
 			            android:layout_width="@dimen/play_control_button_size"
@@ -250,7 +255,8 @@
 			            android:src="@drawable/fullscreen_exit_button"
 			            android:contentDescription="@string/button_desc"
 			            android:visibility="invisible"
-        				style="?android:attr/borderlessButtonStyle"/>
+        				/>
+<!-- 			        style="?android:attr/borderlessButtonStyle" -->
 		        </RelativeLayout>
 			</RelativeLayout>
     	</LinearLayout>

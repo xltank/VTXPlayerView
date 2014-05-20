@@ -1,6 +1,7 @@
 package com.videotx.testvideolib;
 
 import android.content.Intent;
+import android.media.AudioManager;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v7.app.ActionBarActivity;
@@ -9,6 +10,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.Window;
 import android.widget.Button;
 
 import com.videotx.vtxplayerlib.VTXViewVideoActivity;
@@ -20,6 +22,10 @@ public class MainActivity extends ActionBarActivity {
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
+		
+		requestWindowFeature(Window.FEATURE_NO_TITLE); 
+		setVolumeControlStream(AudioManager.STREAM_MUSIC);
+		
 		setContentView(R.layout.activity_main);
 
 		if (savedInstanceState == null) {
