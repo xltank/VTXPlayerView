@@ -147,6 +147,7 @@ public class APILoader extends AsyncTask<String, Integer, String> {
 	@Override
 	protected void onPostExecute(String result)
 	{
+		Log.w(GlobalData.DEBUG_TAG, result);
 		Bundle bundle = new Bundle();
 		bundle.putString("result", result);
 		Message msg = new Message();

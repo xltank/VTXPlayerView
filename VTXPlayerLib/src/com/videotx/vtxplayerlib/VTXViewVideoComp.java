@@ -633,11 +633,12 @@ public class VTXViewVideoComp extends LinearLayout
 
 	private void toFullScreen() {
 		isFullscreenState = true;
+		fullScreenButton.setVisibility(View.INVISIBLE);
+		fullScreenExitButton.setVisibility(View.VISIBLE);
+
 //		player.pause();
 //
 //		setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE);
-//		fullScreenButton.setVisibility(View.INVISIBLE);
-//		fullScreenExitButton.setVisibility(View.VISIBLE);
 //		findViewById(R.id.gap).setVisibility(View.GONE);
 //		findViewById(R.id.video_info).setVisibility(View.GONE);
 //
@@ -660,11 +661,12 @@ public class VTXViewVideoComp extends LinearLayout
 
 	private void exitFullScreen() {
 		isFullscreenState = false;
+		fullScreenButton.setVisibility(View.VISIBLE);
+		fullScreenExitButton.setVisibility(View.INVISIBLE);
+
 //		player.pause();
 //
 //		setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
-//		fullScreenButton.setVisibility(View.VISIBLE);
-//		fullScreenExitButton.setVisibility(View.INVISIBLE);
 //		findViewById(R.id.gap).setVisibility(View.VISIBLE);
 //		findViewById(R.id.video_info).setVisibility(View.VISIBLE);
 //
