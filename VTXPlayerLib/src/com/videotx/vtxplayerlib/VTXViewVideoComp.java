@@ -141,12 +141,19 @@ public class VTXViewVideoComp extends LinearLayout
 			}
 
 			player.release();
-			player = null;
+//			player = null;
 		}
 	}
 	
 	
+	private String playState = "";
+	public String getPlayState() {
+		return playState;
+	}
 
+
+	
+	
 	private Activity activity;
 
 	private final int AUTO_HIDE_DELAY_MILLIS = 3000;
@@ -480,6 +487,8 @@ public class VTXViewVideoComp extends LinearLayout
 		// TODO: loop when it's video, but not playlist.
 	}
 
+	
+	
 	// //////// SurfaceView implements
 
 	@Override
@@ -492,16 +501,12 @@ public class VTXViewVideoComp extends LinearLayout
 	@Override
 	public void surfaceDestroyed(SurfaceHolder holder) {
 		Log.w(GlobalData.DEBUG_TAG, "surface Destroyed");
-		// playerView.setOnTouchListener(null);
-		// playerView.setOnClickListener(null);
 	}
 
 	// when activity is started/restarted, surface is created.
 	@Override
 	public void surfaceCreated(SurfaceHolder holder) {
 		Log.w(GlobalData.DEBUG_TAG, "surface Created");
-		// playerView.setOnTouchListener(onPlayerViewTouchListener);
-		// playerView.setOnClickListener(onPlayerViewClickListener);
 		startPlaying();
 	}
 
