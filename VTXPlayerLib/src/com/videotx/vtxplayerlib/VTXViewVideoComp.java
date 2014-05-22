@@ -70,90 +70,16 @@ public class VTXViewVideoComp extends LinearLayout
 							  OnSeekCompleteListener, 
 							  OnErrorListener, 
 							  OnInfoListener{
+	
+	
+	public static final int STATE_IDLE = 0;
+    public static final int STATE_PREPARING = 1;
+    public static final int STATE_PREPARED = 2;
+    public static final int STATE_PLAYING = 3;
+    public static final int STATE_PAUSED = 4;
+    public static final int STATE_PLAYBACK_COMPLETED = 5;
+    
 
-	public VTXViewVideoComp(Context context, Activity activity) {
-		super(context);
-		this.activity = activity;
-		init();
-	}
-
-	public VTXViewVideoComp(Context context, AttributeSet attrs, Activity activity) {
-		super(context, attrs);
-		this.activity = activity;
-		init();
-	}
-
-	public VTXViewVideoComp(Context context, AttributeSet attrs, int defStyle, Activity activity) {
-		super(context, attrs, defStyle);
-		this.activity = activity;
-		init();
-	}
-	
-	
-	
-	public void playSingleVideo(String publisherId, String videoId) {
-		Log.w(GlobalData.DEBUG_TAG, "play: publisherId - " + publisherId + "videoId - " + videoId);
-		
-		if( publisherId == null || publisherId == "" || videoId == null || videoId == "")
-			return ;
-		
-		getVideoInfo(videoId, publisherId);
-		startTimer();
-	}
-	
-	public void playPlaylist(String publisherId, String playlistId) {
-		Log.w(GlobalData.DEBUG_TAG, "play: publisherId - " + publisherId + "playlistId - " + playlistId);
-		
-		if( publisherId == null || publisherId == "" || playlistId == null || playlistId == "")
-			return ;
-		
-		getPlaylistInfo(playlistId, publisherId);
-		startTimer();
-	}
-	
-	public void pause() {
-		if (player != null && player.isPlaying()) {
-			if (tikerTimer != null) {
-				tikerTimer.cancel();
-				tikerTimer.purge();
-			}
-			player.pause();
-		}
-	}
-	
-	public void resume() {
-		player.start();
-	}
-
-	public void stop() {
-		Log.w(GlobalData.DEBUG_TAG, " stop");
-		if (player != null && player.isPlaying()) {
-			player.stop();
-		}
-	}
-	
-	public void dispose() {
-		Log.w(GlobalData.DEBUG_TAG, " stop");
-		if (player != null && player.isPlaying()) {
-			if (tikerTimer != null) {
-				tikerTimer.cancel();
-				tikerTimer.purge();
-			}
-
-			player.release();
-//			player = null;
-		}
-	}
-	
-	
-	private String playState = "";
-	public String getPlayState() {
-		return playState;
-	}
-
-
-	
-	
 	private Activity activity;
 
 	private final int AUTO_HIDE_DELAY_MILLIS = 3000;
@@ -210,7 +136,96 @@ public class VTXViewVideoComp extends LinearLayout
 	private int maxVolumeIndex;
 
 	private int playlistIndex = 0;
+	
+	
 
+	public VTXViewVideoComp(Context context, Activity activity) {
+		super(context);
+		this.activity = activity;
+		init();
+	}
+
+	public VTXViewVideoComp(Context context, AttributeSet attrs, Activity activity) {
+		super(context, attrs);
+		this.activity = activity;
+		init();
+	}
+
+	public VTXViewVideoComp(Context context, AttributeSet attrs, int defStyle, Activity activity) {
+		super(context, attrs, defStyle);
+		this.activity = activity;
+		init();
+	}
+	
+	// ########## public methods
+	
+	public void playSingleVideo(String publisherId, String videoId) {
+		Log.w(GlobalData.DEBUG_TAG, "play: publisherId - " + publisherId + "videoId - " + videoId);
+		
+		if( publisherId == null || publisherId == "" || videoId == null || videoId == "")
+			return ;
+		
+		getVideoInfo(videoId, publisherId);
+		startTimer();
+	}
+	
+	public void playPlaylist(String publisherId, String playlistId) {
+		Log.w(GlobalData.DEBUG_TAG, "play: publisherId - " + publisherId + "playlistId - " + playlistId);
+		
+		if( publisherId == null || publisherId == "" || playlistId == null || playlistId == "")
+			return ;
+		
+		getPlaylistInfo(playlistId, publisherId);
+		startTimer();
+	}
+	
+	public void pause() {
+		if (player != null && player.isPlaying()) {
+			if (tikerTimer != null) {
+				tikerTimer.cancel();
+				tikerTimer.purge();
+			}
+			player.pause();
+		}
+	}
+	
+	public void resume() {
+		player.start();
+	}
+
+	public void stop() {
+		Log.w(GlobalData.DEBUG_TAG, " stop");
+		if (player != null && player.isPlaying()) {
+			player.stop();
+		}
+	}
+	
+	public void dispose() {
+		Log.w(GlobalData.DEBUG_TAG, " dispose");
+		if (player != null && player.isPlaying()) {
+			if (tikerTimer != null) {
+				tikerTimer.cancel();
+				tikerTimer.purge();
+			}
+
+			player.release();
+//			player = null;
+		}
+	}
+	
+    // TODO: 
+	private int playState = STATE_IDLE;
+	public int getPlayState() {
+		return playState;
+	}
+
+	
+	
+	
+	
+	
+	// ########## private methods
+	
 	private void init() {
 		
 //		getWindow().setFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON, 
@@ -471,8 +486,7 @@ public class VTXViewVideoComp extends LinearLayout
 	}
 
 	public void onSeekComplete(IMediaPlayer mp) {
-		Log.w(GlobalData.DEBUG_TAG,
-				"onSeekComplete : " + mp.getCurrentPosition());
+		Log.w(GlobalData.DEBUG_TAG, "onSeekComplete : " + mp.getCurrentPosition());
 	}
 
 	public void onCompletion(IMediaPlayer mp) {
@@ -492,8 +506,7 @@ public class VTXViewVideoComp extends LinearLayout
 	// //////// SurfaceView implements
 
 	@Override
-	public void surfaceChanged(SurfaceHolder holder, int format, int width,
-			int height) {
+	public void surfaceChanged(SurfaceHolder holder, int format, int width, int height) {
 		// Log.w(GlobalData.DEBUG_TAG, "surface Changed");
 	}
 
